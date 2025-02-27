@@ -1,28 +1,31 @@
 ARG PHP_FPM_NGINX_TAG=8.3-ubuntu24.04-mw25.1.2
+
 FROM dockerregistry.metaways.net/se/php-fpm-nginx-docker/php-fpm-nginx:${PHP_FPM_NGINX_TAG} as moodle
 ARG MOODLE_ROOT=/var/www/moodle
 ARG MOODLE_DATA=/var/lib/moodle
+ARG MOODLE_LOCAL_CACHE=/var/run/moodle/cache
 
 USER root
 
-ARG PHPVERSION=8.3
+ARG PHP_VERSION=8.3
 RUN apt-get update \
  && DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    php${PHPVERSION}-iconv \
-    php${PHPVERSION}-mbstring \
-    php${PHPVERSION}-curl \
-    php${PHPVERSION}-tokenizer \
-    php${PHPVERSION}-soap \
-    php${PHPVERSION}-ctype \
-    php${PHPVERSION}-zip \
-    php${PHPVERSION}-gd \
-    php${PHPVERSION}-simplexml \
-    php${PHPVERSION}-dom \
-    php${PHPVERSION}-xml \
-    php${PHPVERSION}-xmlreader \
-    php${PHPVERSION}-intl \
-    php${PHPVERSION}-fileinfo \
-    php${PHPVERSION}-exif \
+    php${PHP_VERSION}-iconv \
+    php${PHP_VERSION}-mbstring \
+    php${PHP_VERSION}-curl \
+    php${PHP_VERSION}-tokenizer \
+    php${PHP_VERSION}-soap \
+    php${PHP_VERSION}-ctype \
+    php${PHP_VERSION}-zip \
+    php${PHP_VERSION}-gd \
+    php${PHP_VERSION}-simplexml \
+    php${PHP_VERSION}-dom \
+    php${PHP_VERSION}-xml \
+    php${PHP_VERSION}-xmlreader \
+    php${PHP_VERSION}-intl \
+    php${PHP_VERSION}-fileinfo \
+    php${PHP_VERSION}-exif \
+    php${PHP_VERSION}-pgsql \
     graphviz \
     aspell \
     ghostscript
@@ -32,18 +35,29 @@ RUN sed -i 's/.*max_input_vars =.*/max_input_vars = 5000/' /etc/php/8.3/fpm/php.
 
 COPY images/moodle/etc/nginx/site.conf /etc/nginx/sites-available/default
 
-# see https://download.moodle.org/releases/latest/
 ARG APP_VERSION
 RUN export MOODLE_BRANCH=$(printf "%d%02d" $(echo ${APP_VERSION} | cut -d '.' -f 1)  $(echo ${APP_VERSION} | cut -d '.' -f 2)) \
- && wget https://packaging.moodle.org/stable${MOODLE_BRANCH}/moodle-${APP_VERSION}.tgz -O /tmp/moodle.tgz \
- && echo "$(wget  https://packaging.moodle.org/stable${MOODLE_BRANCH}/moodle-${APP_VERSION}.tgz.sha256 -O - | cut -d ' ' -f 2)  /tmp/moodle.tgz" | sha256sum -c \
+ && export URL=https://packaging.moodle.org/stable${MOODLE_BRANCH}/moodle-${APP_VERSION}.tgz \
+ && echo downloading moodle from ${URL} \
+ && wget ${URL} -O /tmp/moodle.tgz \
+ && echo "$(wget  ${URL}.sha256 -O - | cut -d ' ' -f 2)  /tmp/moodle.tgz" | sha256sum -c \
  && tar --no-same-owner -xzf /tmp/moodle.tgz -C $(dirname ${MOODLE_ROOT}) \
  && rm /tmp/moodle.tgz
 
-VOLUME [ ${MOODLE_DATA} ]
-USER www-data
+COPY images/moodle/etc/moodle/config.php ${MOODLE_ROOT}/config.php
 
-COPY images/moodle/etc/moodle/config.php /var/www/moodle/config.php
+RUN mkdir -p ${MOODLE_DATA} ${MOODLE_LOCAL_CACHE} \
+ && chown www-data:www-data ${MOODLE_DATA} ${MOODLE_LOCAL_CACHE} \
+ && chmod 770 ${MOODLE_DATA} ${MOODLE_LOCAL_CACHE}
+
+ENV MOODLE_ROOT=${MOODLE_ROOT}
+ENV MOODLE_DATA=${MOODLE_DATA}
+ENV MOODLE_LOCAL_CACHE=${MOODLE_LOCAL_CACHE}
+
+VOLUME [ ${MOODLE_DATA} ${MOODLE_LOCAL_CACHE} ]
+WORKDIR ${MOODLE_ROOT}/
+
+USER www-data
 
 FROM moodle as moodle-with-plugins
 

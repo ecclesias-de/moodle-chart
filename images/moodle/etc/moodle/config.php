@@ -1,17 +1,34 @@
 <?php
 
+function getenvThrow($varname) {
+    $value = getenv($varname);
+    if ($value === false) {
+        throw new Exception("OCI Container config error: missing environment variable '$varname'.");
+    }
+
+    return $value;
+}
+
+function getenvDefault($varname, $default) {
+    $value = getenv($varname);
+    if ($value === false) {
+        return $default;
+    }
+
+    return $value;
+}
+
 unset($CFG);
 global $CFG;
 $CFG = new stdClass();
 
-#TODO use env variables
-$CFG->dbtype    = 'pgsql';
-$CFG->dblibrary = 'native';
-$CFG->dbhost    = 'localhost';
-$CFG->dbname    = 'moodle';
-$CFG->dbuser    = 'username';
-$CFG->dbpass    = 'password';
-$CFG->prefix    = 'mdl_';
+$CFG->dbtype    = getenvDefault('MOODLE_DBTYPE', 'pgsql');
+$CFG->dblibrary = getenvDefault('MOODLE_DBLIBRARY', 'native');
+$CFG->dbhost    = getenvThrow('MOODLE_DBHOST');
+$CFG->dbname    = getenvThrow('MOODLE_DBNAME');
+$CFG->dbuser    = getenvThrow('MOODLE_DBUSER');
+$CFG->dbpass    = getenvThrow('MOODLE_DBPASSWORD');
+$CFG->prefix    = getenvDefault('MOODLE_PREFIX', 'mdl_');
 $CFG->dboptions = array(
     'dbpersist' => false,
     'dbsocket'  => false,
@@ -20,16 +37,20 @@ $CFG->dboptions = array(
     'dbcollation' => 'utf8mb4_unicode_ci',
 );
 
-$CFG->wwwroot   = 'http://example.com/moodle';
+# moodle url e.g. https://moodle.example.org
+# set by image
+$CFG->wwwroot   = getenvThrow('MOODLE_ROOT');
 
-$CFG->dataroot  = '/var/lib/moodle';
-$CFG->localcachedir = '/var/run/moodle/cache';
+# set by image
+$CFG->dataroot  = getenvThrow('MOODLE_DATA');
+# set by image
+$CFG->localcachedir = getenvThrow('MOODLE_LOCAL_CACHE');;
 
 $CFG->routerconfigured = true;
 
 $CFG->directorypermissions = 02777;
 
-$CFG->admin = 'admin';
+$CFG->admin = getenvDefault('MOODLE_ADMIN', 'admin');
 
 $CFG->xsendfile = 'X-Accel-Redirect';
 $CFG->xsendfilealiases = array(
@@ -37,6 +58,6 @@ $CFG->xsendfilealiases = array(
     '/localcachedir/' => $CFG->localcachedir,
 );
 
-$CFG->upgradekey = 'put_some_password-like_value_here';
+$CFG->upgradekey = getenvThrow('MOODLE_UPGRADEKEY');
 
 require_once(__DIR__ . '/lib/setup.php');
