@@ -1,0 +1,55 @@
+{{- if .Values.moodle.hooks.apply.enabled -}}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ template "moodle.basename" . }}-apply
+  labels:
+    {{- include "moodle.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": post-install,pre-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+    "helm.sh/hook-weight": "-2"
+spec:
+  template:
+    metadata:
+      name: {{ template "moodle.basename" . }}-apply
+      {{- with .Values.jobAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      restartPolicy: Never
+      serviceAccount: {{ .Values.serviceAccount }}
+      containers:
+        - name: moodle-apply
+
+          image: "{{ .Values.moodle.deployment.image.repository }}:{{ .Values.moodle.deployment.image.tag }}"
+          imagePullPolicy: {{ .Values.moodle.deployment.image.pullPolicy }}
+
+          {{- if .Values.debug.diagnoseMode.moodleapply.enabled }}
+          command: {{- toYaml .Values.debug.diagnoseMode.moodleapply.command  | nindent 12 }}
+          {{- else }}
+          command:
+            - bash
+            - -c
+            - |
+              echo running hook
+          {{- end}}
+
+          {{- if .Values.moodle.hooks.apply.resources }}
+          resources: {{- toYaml .Values.moodle.hooks.apply.resources | nindent 12 }}
+          {{- end }}
+
+          {{- include "moodle.envFrom" . | nindent 2 }}
+
+          {{- include "moodle.env" . | nindent 2 }}
+
+          {{- include "moodle.containerSecurityContext" . | nindent 2 }}
+
+          {{- include "moodle.volumeMounts" . | nindent 2 }}
+
+        {{- include "moodle.volumes" . }}
+        
+        {{- include "moodle.podSecurityContext" . }}
+
+{{- end -}}

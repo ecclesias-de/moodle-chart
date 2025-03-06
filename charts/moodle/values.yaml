@@ -1,0 +1,74 @@
+moodle:
+  hooks:
+    apply:
+      enabled: true
+      resources:
+        limits:
+          memory: 512Gi
+        requests:
+          cpu: 500m
+          memory: 512Gi
+    maintenanceoff:
+      enabled: true
+      resources:
+        limits:
+          memory: 512Gi
+        requests:
+          cpu: 100m
+          memory: 512Gi
+  cronjob:
+    resources:
+      limits:
+        memory: 512Gi
+      requests:
+        cpu: 500m
+        memory: 512Gi
+  deployment:
+    image:
+      repository: dockerregistry.metaways.net/se/moodle-chart/moodle
+      tag: 4.5.1-mw0shaee56bdff
+      imagePullPolicy: IfNotPresent
+    resources:
+      limits:
+        memory: 512Gi
+      requests:
+        cpu: 500m
+        memory: 512Gi
+  persistence:
+    accessMode: ReadWriteMany
+    resources:
+      requests:
+        storage: 2Gi
+    storageClassName:
+    existingPvc:
+  secrets:
+    existingSecret:
+    MOODLE_UPGRADEKEY: #REQUIRED
+  ingress:
+    enabled: true
+    hostname: REQUIRED
+    annotations: 
+      # kubernetes.io/tls-acme: "true"
+database:
+  host: #REQUIRED if connectionConfigMap is not set
+  db: #REQUIRED
+  user: #REQUIRED if userSecret is not set
+  password: #REQUIRED if userSecret is not set
+  userSecret: 
+  connectionConfigMap: 
+  sslmode: true
+jobAnnotations:
+metadata:
+  team: #REQUIRED
+  name:
+debug:
+  diagnoseMode:
+    moodleapply:
+      enabled: false
+      command: [tail, -f, /dev/null]
+    moodlemaintenanceoff:
+      enabled: false
+      command: [tail, -f, /dev/null]
+    moodle:
+      enabled: false
+      command: [tail, -f, /dev/null]

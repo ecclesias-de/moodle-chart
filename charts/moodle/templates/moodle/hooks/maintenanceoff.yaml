@@ -1,0 +1,55 @@
+{{- if .Values.moodle.hooks.maintenanceoff.enabled -}}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ template "moodle.basename" . }}-maintenanceoff
+  labels:
+    {{- include "moodle.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": post-install,pre-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+    "helm.sh/hook-weight": "-2"
+spec:
+  template:
+    metadata:
+      name: {{ template "moodle.basename" . }}-maintenanceoff
+      {{- with .Values.jobAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      restartPolicy: Never
+      serviceAccount: {{ .Values.serviceAccount }}
+      containers:
+        - name: moodle-maintenanceoff
+
+          image: "{{ .Values.moodle.deployment.image.repository }}:{{ .Values.moodle.deployment.image.tag }}"
+          imagePullPolicy: {{ .Values.moodle.deployment.image.pullPolicy }}
+
+          {{- if .Values.debug.diagnoseMode.moodlemaintenanceoff.enabled }}
+          command: {{- toYaml .Values.debug.diagnoseMode.moodlemaintenanceoff.command  | nindent 12 }}
+          {{- else }}
+          command:
+            - bash
+            - -c
+            - |
+              echo running hook
+          {{- end}}
+
+          {{- if .Values.moodle.hooks.maintenanceoff.resources }}
+          resources: {{- toYaml .Values.moodle.hooks.maintenanceoff.resources | nindent 12 }}
+          {{- end }}
+
+          {{- include "moodle.envFrom" . | nindent 2 }}
+
+          {{- include "moodle.env" . | nindent 2 }}
+
+          {{- include "moodle.containerSecurityContext" . | nindent 2 }}
+
+          {{- include "moodle.volumeMounts" . | nindent 2 }}
+
+        {{- include "moodle.volumes" . }}
+        
+        {{- include "moodle.podSecurityContext" . }}
+
+{{- end -}}
