@@ -8,6 +8,7 @@ stages:
   - package
 
 include:
-  - component: $CI_SERVER_FQDN/gitlabci-components/image-build/build@1.0.1
+  - component: $CI_SERVER_FQDN/gitlabci-components/image-build/build@1.0.2
     inputs:
       name: moodle
+      target: moodle-with-plugins
