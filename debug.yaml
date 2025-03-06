@@ -11,13 +11,13 @@ metadata:
     app.kubernetes.io/instance: test
     app.kubernetes.io/managed-by: Helm
     helm.sh/chart: moodle-0.0.0
-    app.metaways.net/team: 
+    app.metaways.net/team: se
     app.metaways.net/name: 
     app.kubernetes.io/component: moodle
     # app.metaways.net/software: 
     app.kubernetes.io/version: "4.5.1-mw0shaee56bdff"
 stringData:
-  MOODLE_UPGRADEKEY:
+  MOODLE_UPGRADEKEY: "notsecureqrequireschanging"
 ---
 # Source: moodle/templates/moodle/pvc.yaml
 apiVersion: v1
@@ -30,7 +30,7 @@ metadata:
     app.kubernetes.io/instance: test
     app.kubernetes.io/managed-by: Helm
     helm.sh/chart: moodle-0.0.0
-    app.metaways.net/team: 
+    app.metaways.net/team: se
     app.metaways.net/name: 
     app.kubernetes.io/component: moodle
     # app.metaways.net/software: 
@@ -41,6 +41,7 @@ spec:
   resources:
     requests:
       storage: 2Gi
+  storageClassName: csi-cephfs-sc
 ---
 # Source: moodle/templates/moodle/service.yaml
 apiVersion: v1
@@ -53,7 +54,7 @@ metadata:
     app.kubernetes.io/instance: test
     app.kubernetes.io/managed-by: Helm
     helm.sh/chart: moodle-0.0.0
-    app.metaways.net/team: 
+    app.metaways.net/team: se
     app.metaways.net/name: 
     app.kubernetes.io/component: moodle
     # app.metaways.net/software: 
@@ -82,7 +83,7 @@ metadata:
     app.kubernetes.io/instance: test
     app.kubernetes.io/managed-by: Helm
     helm.sh/chart: moodle-0.0.0
-    app.metaways.net/team: 
+    app.metaways.net/team: se
     app.metaways.net/name: 
     app.kubernetes.io/component: moodle
     # app.metaways.net/software: 
@@ -101,13 +102,13 @@ spec:
         app.kubernetes.io/instance: test
         app.kubernetes.io/managed-by: Helm
         helm.sh/chart: moodle-0.0.0
-        app.metaways.net/team: 
+        app.metaways.net/team: se
         app.metaways.net/name: 
         app.kubernetes.io/component: moodle
         # app.metaways.net/software: 
         app.kubernetes.io/version: "4.5.1-mw0shaee56bdff"
       annotations:
-        checksum/secret: 1233a02348c7bc246057afaf032788a9cd0e0ff331925c34538ac675c1e25449
+        checksum/secret: 9e6d60f060968e656e6c896d3f7fad54a485eab14a32c904b5786a12b7f43622
     spec:
       serviceAccount: 
       containers:
@@ -127,13 +128,22 @@ spec:
           env:
             
             - name: POSTGRES_HOST
-              value: 
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-app-owner-user
+                  key: HOST
             - name: POSTGRES_DB
-              value: 
+              value: "app"
             - name: POSTGRES_USER
-              value: 
+              valueFrom:
+                secretKeyRef:
+                  name: postgres.db-rw-connection
+                  key: username
             - name: POSTGRES_PASSWORD
-              value: 
+              valueFrom:
+                secretKeyRef:
+                  name: postgres.db-rw-connection
+                  key: password
             - name: POSTGRES_SSLMODE
               value: "true"
           securityContext:
@@ -159,7 +169,7 @@ metadata:
     app.kubernetes.io/instance: test
     app.kubernetes.io/managed-by: Helm
     helm.sh/chart: moodle-0.0.0
-    app.metaways.net/team: 
+    app.metaways.net/team: se
     app.metaways.net/name: 
     app.kubernetes.io/component: moodle
     # app.metaways.net/software: 
@@ -197,13 +207,22 @@ spec:
               env:
                 
                 - name: POSTGRES_HOST
-                  value: 
+                  valueFrom:
+                    configMapKeyRef:
+                      name: postgres-app-owner-user
+                      key: HOST
                 - name: POSTGRES_DB
-                  value: 
+                  value: "app"
                 - name: POSTGRES_USER
-                  value: 
+                  valueFrom:
+                    secretKeyRef:
+                      name: postgres.db-rw-connection
+                      key: username
                 - name: POSTGRES_PASSWORD
-                  value: 
+                  valueFrom:
+                    secretKeyRef:
+                      name: postgres.db-rw-connection
+                      key: password
                 - name: POSTGRES_SSLMODE
                   value: "true"
     
@@ -233,14 +252,14 @@ metadata:
     app.kubernetes.io/instance: test
     app.kubernetes.io/managed-by: Helm
     helm.sh/chart: moodle-0.0.0
-    app.metaways.net/team: 
+    app.metaways.net/team: se
     app.metaways.net/name: 
     app.kubernetes.io/component: moodle
     # app.metaways.net/software: 
     app.kubernetes.io/version: "4.5.1-mw0shaee56bdff"
 spec:
   rules:
-    - host: REQUIRED
+    - host: invalid.u8.vc
       http:
         paths:
           - path: /
@@ -252,8 +271,8 @@ spec:
                   number: 80
   tls:
     - hosts:
-        - "REQUIRED"
-      secretName: REQUIRED-tls
+        - "invalid.u8.vc"
+      secretName: invalid.u8.vc-tls
 ---
 # Source: moodle/templates/moodle/hooks/apply.yaml
 apiVersion: batch/v1
@@ -265,7 +284,7 @@ metadata:
     app.kubernetes.io/instance: test
     app.kubernetes.io/managed-by: Helm
     helm.sh/chart: moodle-0.0.0
-    app.metaways.net/team: 
+    app.metaways.net/team: se
     app.metaways.net/name: 
     app.kubernetes.io/component: moodle
     # app.metaways.net/software: 
@@ -297,29 +316,34 @@ spec:
             requests:
               cpu: 500m
               memory: 512Gi
-  
-            envFrom:
-              - secretRef:
-                  name: moodle-test-moodle
-  
-            env:
-              
-              - name: POSTGRES_HOST
-                value: 
-              - name: POSTGRES_DB
-                value: 
-              - name: POSTGRES_USER
-                value: 
-              - name: POSTGRES_PASSWORD
-                value: 
-              - name: POSTGRES_SSLMODE
-                value: "true"
-  
-            securityContext:
-  
-            volumeMounts:
-              - name: data
-                mountPath: /var/lib/moodle
+          envFrom:
+            - secretRef:
+                name: moodle-test-moodle
+          env:
+            
+            - name: POSTGRES_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-app-owner-user
+                  key: HOST
+            - name: POSTGRES_DB
+              value: "app"
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres.db-rw-connection
+                  key: username
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres.db-rw-connection
+                  key: password
+            - name: POSTGRES_SSLMODE
+              value: "true"
+          securityContext:
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/moodle
       volumes:
         - name: data
           persistentVolumeClaim:
@@ -338,7 +362,7 @@ metadata:
     app.kubernetes.io/instance: test
     app.kubernetes.io/managed-by: Helm
     helm.sh/chart: moodle-0.0.0
-    app.metaways.net/team: 
+    app.metaways.net/team: se
     app.metaways.net/name: 
     app.kubernetes.io/component: moodle
     # app.metaways.net/software: 
@@ -378,13 +402,22 @@ spec:
             env:
               
               - name: POSTGRES_HOST
-                value: 
+                valueFrom:
+                  configMapKeyRef:
+                    name: postgres-app-owner-user
+                    key: HOST
               - name: POSTGRES_DB
-                value: 
+                value: "app"
               - name: POSTGRES_USER
-                value: 
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres.db-rw-connection
+                    key: username
               - name: POSTGRES_PASSWORD
-                value: 
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres.db-rw-connection
+                    key: password
               - name: POSTGRES_SSLMODE
                 value: "true"
   

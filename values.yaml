@@ -1,0 +1,20 @@
+moodle:
+  deployment:
+    image:
+      tag: 4.5.1-mw0shaee56bdff
+  persistence:
+    storageClassName: csi-cephfs-sc
+  secrets:
+    MOODLE_UPGRADEKEY: notsecureqrequireschanging
+  ingress:
+    hostname: invalid.u8.vc
+    annotations: 
+      # kubernetes.io/tls-acme: "true"
+database:
+  db: app
+  userSecret: postgres.db-rw-connection
+  connectionConfigMap: postgres-app-owner-user
+  sslmode: true
+jobAnnotations:
+metadata:
+  team: se
