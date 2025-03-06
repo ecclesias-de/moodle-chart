@@ -4,36 +4,36 @@ moodle:
       enabled: true
       resources:
         limits:
-          memory: 512Gi
+          memory: 512Mi
         requests:
           cpu: 500m
-          memory: 512Gi
+          memory: 512Mi
     maintenanceoff:
       enabled: true
       resources:
         limits:
-          memory: 512Gi
+          memory: 512Mi
         requests:
           cpu: 100m
-          memory: 512Gi
+          memory: 512Mi
   cronjob:
     resources:
       limits:
-        memory: 512Gi
+        memory: 512Mi
       requests:
         cpu: 500m
-        memory: 512Gi
+        memory: 512Mi
   deployment:
     image:
-      repository: dockerregistry.metaways.net/se/moodle-chart/moodle
-      tag: 4.5.1-mw0shaee56bdff
+      repository: registry.rz1.metaways.net/devops/moodle
+      tag: 4.5.1-rc2
       imagePullPolicy: IfNotPresent
     resources:
       limits:
-        memory: 512Gi
+        memory: 512Mi
       requests:
         cpu: 500m
-        memory: 512Gi
+        memory: 512Mi
     replicas: 2
   persistence:
     accessMode: ReadWriteMany
@@ -58,6 +58,8 @@ database:
   userSecret: 
   connectionConfigMap: 
   sslmode: true
+pullSecret:
+  data: #OPTIONAL
 jobAnnotations:
 metadata:
   team: #REQUIRED

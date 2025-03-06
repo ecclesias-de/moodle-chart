@@ -25,7 +25,7 @@ spec:
                   echo running cronjob
 
               {{- if .Values.moodle.cronjob.resources }}
-              resources: {{- toYaml .Values.moodle.cronjob.resources | nindent 14 }}
+              resources: {{- toYaml .Values.moodle.cronjob.resources | nindent 16 }}
               {{- end }}
 
               {{- include "moodle.envFrom" . | nindent 4 }}
@@ -39,3 +39,8 @@ spec:
           {{- include "moodle.volumes" . | nindent 4 }}
 
           {{- include "moodle.podSecurityContext" . | nindent 4 }}
+
+          imagePullSecrets:
+          {{- if .Values.pullSecret.data }}
+            - name: {{ template "moodle.basename" . }}-pull-secret
+          {{- end }}

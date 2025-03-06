@@ -44,6 +44,8 @@ spec:
 
           {{- define "moodle.containerSecurityContext" }}
           securityContext:
+            runAsUser: 33
+            runAsGroup: 33
           {{- end }}
           {{- include "moodle.containerSecurityContext" . }}
 
@@ -64,7 +66,12 @@ spec:
 
       {{- define "moodle.podSecurityContext" }}
       securityContext:
-        fsGroup: 33
+        fsGroup: 150
         fsGroupChangePolicy: OnRootMismatch
       {{- end }}
       {{- include "moodle.podSecurityContext" . }}
+
+      imagePullSecrets:
+      {{- if .Values.pullSecret.data }}
+        - name: {{ template "moodle.basename" . }}-pull-secret
+      {{- end }}

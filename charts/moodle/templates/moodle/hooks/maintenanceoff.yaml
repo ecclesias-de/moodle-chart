@@ -40,16 +40,21 @@ spec:
           resources: {{- toYaml .Values.moodle.hooks.maintenanceoff.resources | nindent 12 }}
           {{- end }}
 
-          {{- include "moodle.envFrom" . | nindent 2 }}
+          {{- include "moodle.envFrom" . }}
 
-          {{- include "moodle.env" . | nindent 2 }}
+          {{- include "moodle.env" . }}
 
-          {{- include "moodle.containerSecurityContext" . | nindent 2 }}
+          {{- include "moodle.containerSecurityContext" . }}
 
-          {{- include "moodle.volumeMounts" . | nindent 2 }}
+          {{- include "moodle.volumeMounts" . }}
 
         {{- include "moodle.volumes" . }}
         
         {{- include "moodle.podSecurityContext" . }}
+
+        imagePullSecrets:
+        {{- if .Values.pullSecret.data }}
+          - name: {{ template "moodle.basename" . }}-pull-secret
+        {{- end }}
 
 {{- end -}}
