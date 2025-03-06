@@ -12,3 +12,8 @@ include:
     inputs:
       name: moodle
       target: moodle-with-plugins
+
+include:
+  - component: $CI_SERVER_FQDN/gitlabci-components/helm-build/build@1.2.1
+    inputs:
+      name: moodle

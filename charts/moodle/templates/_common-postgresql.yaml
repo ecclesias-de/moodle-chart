@@ -1,0 +1,76 @@
+{{- /*
+postgres env template - use configure postgres or read postgres from app env secrets/configmaps
+version 1.0.0
+usage:
+  env:
+    {{ include "postgresql.env" . | nindent 12 }}
+    # mapping vars to app specific vars
+    - name: APP_DB_HOST
+      value: $(POSTGRES_HOST)
+values.yaml:
+  database:
+    host: #REQUIRED if connectionConfigMap is not set
+    db: #REQUIRED
+    user: #REQUIRED if userSecret is not set
+    password: #REQUIRED if userSecret is not set
+    userSecret:
+    connectionConfigMap:
+    sslmode: true
+*/}}
+
+{{- define "postgresql.env.host" -}}
+{{- if .Values.database.connectionConfigMap -}}
+- name: POSTGRES_HOST
+  valueFrom:
+    configMapKeyRef:
+      name: {{ .Values.database.connectionConfigMap }}
+      key: HOST
+{{- else -}}
+- name: POSTGRES_HOST
+  value: {{ .Values.database.host | quote  }}
+{{- end -}}
+{{- end -}}
+
+{{- define "postgresql.env.db" -}}
+- name: POSTGRES_DB
+  value: {{ .Values.database.db | quote  }}
+{{- end -}}
+
+{{- define "postgresql.env.user" -}}
+{{- if .Values.database.userSecret -}}
+- name: POSTGRES_USER
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.database.userSecret }}
+      key: username
+{{- else -}}
+- name: POSTGRES_USER
+  value: {{ .Values.database.user | quote  }}
+{{- end -}}
+{{- end -}}
+
+{{- define "postgresql.env.password" -}}
+{{- if .Values.database.userSecret -}}
+- name: POSTGRES_PASSWORD
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.database.userSecret }}
+      key: password
+{{- else -}}
+- name: POSTGRES_PASSWORD
+  value: {{ .Values.database.password | quote  }}
+{{- end -}}
+{{- end -}}
+
+{{- define "postgresql.env.sslmode" -}}
+- name: POSTGRES_SSLMODE
+  value: {{ .Values.database.sslmode | quote }}
+{{- end -}}
+
+{{- define "postgresql.env" -}}
+{{ include "postgresql.env.host" . }}
+{{ include "postgresql.env.db" . }}
+{{ include "postgresql.env.user" . }}
+{{ include "postgresql.env.password" . }}
+{{ include "postgresql.env.sslmode" . }}
+{{- end -}}
