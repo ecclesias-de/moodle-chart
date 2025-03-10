@@ -48,6 +48,7 @@ spec:
             - name: MOODLE_DBPASSWORD
               value: $(POSTGRES_PASSWORD)
             # todo: support http ?
+            # needs to end with /moodle, otherwise moodle will 500 ???? 
             - name: MOODLE_WWWROOT
               value: https://{{ .Values.moodle.ingress.hostname }}
           {{- end }}

@@ -60,4 +60,6 @@ $CFG->xsendfilealiases = array(
 
 $CFG->upgradekey = getenvThrow('MOODLE_UPGRADEKEY');
 
+$CFG->sslproxy = true;
+
 require_once(__DIR__ . '/lib/setup.php');
