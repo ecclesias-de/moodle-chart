@@ -39,6 +39,17 @@ spec:
           {{- define "moodle.env" }}
           env:
             {{ include "postgresql.env" . | nindent 12 }}
+            - name: MOODLE_DBHOST
+              value: $(POSTGRES_HOST)
+            - name: MOODLE_DBNAME
+              value: $(POSTGRES_DB)
+            - name: MOODLE_DBUSER
+              value: $(POSTGRES_USER)
+            - name: MOODLE_DBPASSWORD
+              value: $(POSTGRES_PASSWORD)
+            # todo: support http ?
+            - name: MOODLE_WWWROOT
+              value: https://{{ .Values.moodle.ingress.hostname }}
           {{- end }}
           {{- include "moodle.env" . }}
 

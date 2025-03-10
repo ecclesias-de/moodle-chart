@@ -39,7 +39,7 @@ $CFG->dboptions = array(
 
 # moodle url e.g. https://moodle.example.org
 # set by image
-$CFG->wwwroot   = getenvThrow('MOODLE_ROOT');
+$CFG->wwwroot   = getenvThrow('MOODLE_WWWROOT');
 
 # set by image
 $CFG->dataroot  = getenvThrow('MOODLE_DATA');

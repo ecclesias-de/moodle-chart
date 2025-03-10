@@ -7,6 +7,8 @@ releases:
       - secrets.sops.yaml
     values:
       - moodle:
+          deployment:
+            replicas: 1
           persistence:
             storageClassName: csi-cephfs-sc
           secrets:
