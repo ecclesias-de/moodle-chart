@@ -47,6 +47,7 @@ $CFG->dataroot  = getenvThrow('MOODLE_DATA');
 $CFG->localcachedir = getenvThrow('MOODLE_LOCAL_CACHE');;
 
 $CFG->routerconfigured = true;
+$CFG->sslproxy = true;
 
 $CFG->directorypermissions = 02777;
 
@@ -60,6 +61,5 @@ $CFG->xsendfilealiases = array(
 
 $CFG->upgradekey = getenvThrow('MOODLE_UPGRADEKEY');
 
-$CFG->sslproxy = true;
 
 require_once(__DIR__ . '/lib/setup.php');
