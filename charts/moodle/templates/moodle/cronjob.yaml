@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ template "moodle.basename" . }}
+  name: {{ template "moodle.basename" . }}-cron
   namespace: {{ .Release.Namespace | quote }}
   labels: {{- include "moodle.labels" . | nindent 4 }}
 spec:

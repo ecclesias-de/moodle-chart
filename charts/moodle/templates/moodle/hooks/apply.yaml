@@ -33,9 +33,19 @@ spec:
             - bash
             - -c
             - |
-              echo '<h1 style="text-align: center;"> under maintenance</h1>' > ${MOODLE_DATA}/climaintenance.html
               php admin/cli/install_database.php --agree-license --adminuser=${MOODLE_ADMIN} --adminpass=${MOODLE_ADMIN_PASSWORD};
-              php admin/cli/upgrade.php;
+
+              php admin/cli/upgrade.php --is-pending;
+              if [ $? -eq 2 ]; then
+                # update is required
+                php admin/cli/upgrade.php --is-maintenance-required;
+                if [ $? -eq 2 ]; then
+                    # maintenance mode is required
+                    echo '<h1 style="text-align: center;"> under maintenance</h1>' > ${MOODLE_DATA}/climaintenance.html;
+                fi;
+
+                php admin/cli/upgrade.php --lang=en --non-interactive;
+              fi;
           {{- end}}
 
           {{- if .Values.moodle.hooks.apply.resources }}

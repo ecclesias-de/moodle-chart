@@ -46,7 +46,7 @@ RUN export MOODLE_BRANCH=$(printf "%d%02d" $(echo ${APP_VERSION} | cut -d '.' -f
 
 # https://moodle.org/plugins/tool_heartbeat
 RUN wget https://moodle.org/plugins/download.php/33918/tool_heartbeat_moodle44_2024111800.zip -O /tmp/tool_heartbeat.zip \
- && unzip /tmp/tool_heartbeat.zip -d ${MOODLE_ROOT}/mod/ \
+ && unzip /tmp/tool_heartbeat.zip -d ${MOODLE_ROOT}/admin/tool/ \
  && rm /tmp/tool_heartbeat.zip
 
 COPY images/moodle/etc/moodle/config.php ${MOODLE_ROOT}/config.php
