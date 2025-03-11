@@ -22,7 +22,8 @@ spec:
                 - bash
                 - -c
                 - |
-                  php admin/cli/cron.php
+                  php admin/cli/cron.php --stop; # stop all cron processes, after their current task
+                  php admin/cli/cron.php --keep-alive=50;
 
               {{- if .Values.moodle.cronjob.resources }}
               resources: {{- toYaml .Values.moodle.cronjob.resources | nindent 16 }}
