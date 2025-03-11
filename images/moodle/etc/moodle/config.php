@@ -61,5 +61,6 @@ $CFG->xsendfilealiases = array(
 
 $CFG->upgradekey = getenvThrow('MOODLE_UPGRADEKEY');
 
+$CFG->preventexecpath = true;
 
 require_once(__DIR__ . '/lib/setup.php');

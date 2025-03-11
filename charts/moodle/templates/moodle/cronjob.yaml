@@ -22,7 +22,7 @@ spec:
                 - bash
                 - -c
                 - |
-                  echo running cronjob
+                  php admin/cli/cron.php
 
               {{- if .Values.moodle.cronjob.resources }}
               resources: {{- toYaml .Values.moodle.cronjob.resources | nindent 16 }}

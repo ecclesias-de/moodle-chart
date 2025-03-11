@@ -26,7 +26,7 @@ moodle:
   deployment:
     image:
       repository: registry.rz1.metaways.net/devops/moodle
-      tag: 4.5.2-rc2
+      tag: 4.5.2-rc3
       imagePullPolicy: IfNotPresent
     resources:
       limits:
@@ -45,6 +45,7 @@ moodle:
   secrets:
     existingSecret:
     MOODLE_UPGRADEKEY: #REQUIRED
+    MOODLE_ADMIN_PASSWORD: #REQUIRED
   ingress:
     enabled: true
     hostname: REQUIRED

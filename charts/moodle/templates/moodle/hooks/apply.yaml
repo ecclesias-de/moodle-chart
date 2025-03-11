@@ -8,7 +8,7 @@ metadata:
   annotations:
     "helm.sh/hook": post-install,pre-upgrade
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
-    "helm.sh/hook-weight": "-2"
+    "helm.sh/hook-weight": "-10"
 spec:
   template:
     metadata:
@@ -33,7 +33,9 @@ spec:
             - bash
             - -c
             - |
-              echo running hook
+              echo '<h1 style="text-align: center;"> under maintenance</h1>' > ${MOODLE_DATA}/climaintenance.html
+              php admin/cli/install_database.php --agree-license --adminuser=${MOODLE_ADMIN} --adminpass=${MOODLE_ADMIN_PASSWORD};
+              php admin/cli/upgrade.php;
           {{- end}}
 
           {{- if .Values.moodle.hooks.apply.resources }}

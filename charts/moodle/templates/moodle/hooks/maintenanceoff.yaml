@@ -6,9 +6,9 @@ metadata:
   labels:
     {{- include "moodle.labels" . | nindent 4 }}
   annotations:
-    "helm.sh/hook": post-install,pre-upgrade
+    "helm.sh/hook": post-install,post-upgrade
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
-    "helm.sh/hook-weight": "-2"
+    "helm.sh/hook-weight": "10"
 spec:
   template:
     metadata:
@@ -33,7 +33,7 @@ spec:
             - bash
             - -c
             - |
-              echo running hook
+              rm -f ${MOODLE_DATA}/climaintenance.html
           {{- end}}
 
           {{- if .Values.moodle.hooks.maintenanceoff.resources }}
