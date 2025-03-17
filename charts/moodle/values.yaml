@@ -76,3 +76,6 @@ debug:
     moodle:
       enabled: false
       command: [tail, -f, /dev/null]
+  securityContext:
+    moodle:
+      enabled: true

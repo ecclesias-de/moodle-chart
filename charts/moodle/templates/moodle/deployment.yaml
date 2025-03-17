@@ -39,14 +39,6 @@ spec:
           {{- define "moodle.env" }}
           env:
             {{ include "postgresql.env" . | nindent 12 }}
-            - name: MOODLE_DBHOST
-              value: $(POSTGRES_HOST)
-            - name: MOODLE_DBNAME
-              value: $(POSTGRES_DB)
-            - name: MOODLE_DBUSER
-              value: $(POSTGRES_USER)
-            - name: MOODLE_DBPASSWORD
-              value: $(POSTGRES_PASSWORD)
             - name: MOODLE_WWWROOT
               value: https://{{ .Values.moodle.ingress.hostname }}
           {{- end }}
@@ -56,6 +48,13 @@ spec:
           securityContext:
             runAsUser: 33
             runAsGroup: 33
+            {{- if .Values.debug.securityContext.moodle.enabled }}
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+            runAsNonRoot: true
+            readOnlyRootFilesystem: false
+            {{- end }}
           {{- end }}
           {{- include "moodle.containerSecurityContext" . }}
 
@@ -103,6 +102,8 @@ spec:
       securityContext:
         fsGroup: 150
         fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
       {{- end }}
       {{- include "moodle.podSecurityContext" . }}
 
