@@ -1,0 +1,47 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ template "moodle.basename" . }}-cron
+  namespace: {{ .Release.Namespace | quote }}
+  labels: {{- include "moodle.labels" . | nindent 4 }}
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          serviceAccount: {{ .Values.serviceAccount }}
+          containers:
+            - name: moodle
+
+              image: {{ .Values.moodle.deployment.image.repository }}:{{ .Values.moodle.deployment.image.tag }}
+              imagePullPolicy: {{ .Values.moodle.deployment.image.imagePullPolicy }}
+
+              command:
+                - bash
+                - -c
+                - |
+                  php admin/cli/cron.php --stop; # stop all cron processes, after their current task
+                  php admin/cli/cron.php --keep-alive=50;
+
+              {{- if .Values.moodle.cronjob.resources }}
+              resources: {{- toYaml .Values.moodle.cronjob.resources | nindent 16 }}
+              {{- end }}
+
+              {{- include "moodle.envFrom" . | nindent 4 }}
+
+              {{- include "moodle.env" . | nindent 4 }}
+
+              {{- include "moodle.containerSecurityContext" . | nindent 4 }}
+
+              {{- include "moodle.volumeMounts" . | nindent 4 }}
+
+          {{- include "moodle.volumes" . | nindent 4 }}
+
+          {{- include "moodle.podSecurityContext" . | nindent 4 }}
+
+          imagePullSecrets:
+          {{- if .Values.pullSecret.data }}
+            - name: {{ template "moodle.basename" . }}-pull-secret
+          {{- end }}

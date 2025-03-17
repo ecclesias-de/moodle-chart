@@ -1,0 +1,29 @@
+releases:
+  - name: test
+    kubeContext: moodle-dev-cluster
+    namespace: moodle-test
+    chart: ../charts/moodle
+    secrets:
+      - secrets.sops.yaml
+    values:
+      - moodle:
+          deployment:
+            replicas: 1
+          persistence:
+            storageClassName: csi-cephfs-sc
+          secrets:
+            MOODLE_UPGRADEKEY: notsecureqrequireschanging
+            MOODLE_ADMIN_PASSWORD: admin
+          ingress:
+            annotations: 
+              kubernetes.io/tls-acme: "true"
+        database:
+          db: app
+          userSecret: postgres-app-owner-user
+          connectionConfigMap: postgres.db-rw-connection
+          sslmode: true
+        redis:
+          connectionConfigMap: redis.cache-connection
+        jobAnnotations:
+        metadata:
+          team: se

@@ -22,12 +22,12 @@ unset($CFG);
 global $CFG;
 $CFG = new stdClass();
 
-$CFG->dbtype    = getenvDefault('MOODLE_DBTYPE', 'pgsql');
-$CFG->dblibrary = getenvDefault('MOODLE_DBLIBRARY', 'native');
-$CFG->dbhost    = getenvThrow('MOODLE_DBHOST');
-$CFG->dbname    = getenvThrow('MOODLE_DBNAME');
-$CFG->dbuser    = getenvThrow('MOODLE_DBUSER');
-$CFG->dbpass    = getenvThrow('MOODLE_DBPASSWORD');
+$CFG->dbtype    = 'pgsql';
+$CFG->dblibrary = 'native';
+$CFG->dbhost    = getenvThrow('POSTGRES_HOST');
+$CFG->dbname    = getenvThrow('POSTGRES_DB');
+$CFG->dbuser    = getenvThrow('POSTGRES_USER');
+$CFG->dbpass    = getenvThrow('POSTGRES_PASSWORD');
 $CFG->prefix    = getenvDefault('MOODLE_PREFIX', 'mdl_');
 $CFG->dboptions = array(
     'dbpersist' => false,
@@ -37,9 +37,14 @@ $CFG->dboptions = array(
     'dbcollation' => 'utf8mb4_unicode_ci',
 );
 
+$CFG->session_handler_class = '\core\session\redis';
+$CFG->session_redis_host = getenvThrow('REDIS_HOST');
+$CFG->session_redis_port = getenvDefault('REDIS_PORT', '6379');
+$CFG->session_redis_database = getenvDefault('REDIS_DB', '0');
+
 # moodle url e.g. https://moodle.example.org
 # set by image
-$CFG->wwwroot   = getenvThrow('MOODLE_ROOT');
+$CFG->wwwroot   = getenvThrow('MOODLE_WWWROOT');
 
 # set by image
 $CFG->dataroot  = getenvThrow('MOODLE_DATA');
@@ -47,6 +52,7 @@ $CFG->dataroot  = getenvThrow('MOODLE_DATA');
 $CFG->localcachedir = getenvThrow('MOODLE_LOCAL_CACHE');;
 
 $CFG->routerconfigured = true;
+$CFG->sslproxy = true;
 
 $CFG->directorypermissions = 02777;
 
@@ -59,5 +65,7 @@ $CFG->xsendfilealiases = array(
 );
 
 $CFG->upgradekey = getenvThrow('MOODLE_UPGRADEKEY');
+
+$CFG->preventexecpath = true;
 
 require_once(__DIR__ . '/lib/setup.php');

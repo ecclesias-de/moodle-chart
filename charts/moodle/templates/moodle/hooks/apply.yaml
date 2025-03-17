@@ -1,0 +1,72 @@
+{{- if .Values.moodle.hooks.apply.enabled -}}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ template "moodle.basename" . }}-apply
+  labels:
+    {{- include "moodle.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": post-install,pre-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+    "helm.sh/hook-weight": "-10"
+spec:
+  template:
+    metadata:
+      name: {{ template "moodle.basename" . }}-apply
+      {{- with .Values.jobAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      restartPolicy: Never
+      serviceAccount: {{ .Values.serviceAccount }}
+      containers:
+        - name: moodle-apply
+
+          image: "{{ .Values.moodle.deployment.image.repository }}:{{ .Values.moodle.deployment.image.tag }}"
+          imagePullPolicy: {{ .Values.moodle.deployment.image.pullPolicy }}
+
+          {{- if .Values.debug.diagnoseMode.moodleapply.enabled }}
+          command: {{- toYaml .Values.debug.diagnoseMode.moodleapply.command  | nindent 12 }}
+          {{- else }}
+          command:
+            - bash
+            - -c
+            - |
+              php admin/cli/install_database.php --agree-license --adminuser=${MOODLE_ADMIN} --adminpass=${MOODLE_ADMIN_PASSWORD};
+
+              php admin/cli/upgrade.php --is-pending;
+              if [ $? -eq 2 ]; then
+                # update is required
+                php admin/cli/upgrade.php --is-maintenance-required;
+                if [ $? -eq 2 ]; then
+                    # maintenance mode is required
+                    echo '<h1 style="text-align: center;"> under maintenance</h1>' > ${MOODLE_DATA}/climaintenance.html;
+                fi;
+
+                php admin/cli/upgrade.php --lang=en --non-interactive;
+              fi;
+          {{- end}}
+
+          {{- if .Values.moodle.hooks.apply.resources }}
+          resources: {{- toYaml .Values.moodle.hooks.apply.resources | nindent 12 }}
+          {{- end }}
+
+          {{- include "moodle.envFrom" . }}
+
+          {{- include "moodle.env" . }}
+
+          {{- include "moodle.containerSecurityContext" . }}
+
+          {{- include "moodle.volumeMounts" . }}
+
+        {{- include "moodle.volumes" . }}
+        
+        {{- include "moodle.podSecurityContext" . }}
+
+        imagePullSecrets:
+        {{- if .Values.pullSecret.data }}
+          - name: {{ template "moodle.basename" . }}-pull-secret
+        {{- end }}
+
+{{- end -}}

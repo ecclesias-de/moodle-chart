@@ -1,0 +1,27 @@
+{{- if .Values.moodle.ingress.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ template "moodle.basename" . }}
+  namespace: {{ .Release.Namespace | quote }}
+  labels: {{- include "moodle.labels" . | nindent 4 }}
+  {{- if .Values.moodle.ingress.annotations }}
+  annotations: {{ .Values.moodle.ingress.annotations | toYaml | nindent 4 }}
+  {{- end }}
+spec:
+  rules:
+    - host: {{ .Values.moodle.ingress.hostname }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "moodle.basename" . }}
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - {{ .Values.moodle.ingress.hostname | quote }}
+      secretName: {{ printf "%s-tls" .Values.moodle.ingress.hostname }}
+{{- end }}

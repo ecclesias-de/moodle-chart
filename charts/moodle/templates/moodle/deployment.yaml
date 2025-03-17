@@ -1,0 +1,114 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "moodle.basename" . }}
+  namespace: {{ .Release.Namespace | quote }}
+  labels: {{- include "moodle.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.moodle.deployment.replicas }}
+  selector:
+    matchLabels: {{- include "moodle.matchLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels: {{- include "moodle.labels" . | nindent 8 }}
+      annotations:
+        checksum/secret: {{ include (print $.Template.BasePath "/moodle/secret.yaml") . | sha256sum }}
+    spec:
+      serviceAccount: {{ .Values.serviceAccount }}
+      containers:
+        - name: moodle
+
+          image: {{ .Values.moodle.deployment.image.repository }}:{{ .Values.moodle.deployment.image.tag }}
+          imagePullPolicy: {{ .Values.moodle.deployment.image.imagePullPolicy }}
+
+          {{- if .Values.debug.diagnoseMode.moodle.enabled }}
+          command: {{- toYaml .Values.debug.diagnoseMode.moodle.command  | nindent 12 }}
+          {{- end}}
+
+          {{- if .Values.moodle.deployment.resources }}
+          resources: {{- toYaml .Values.moodle.deployment.resources | nindent 12 }}
+          {{- end }}
+
+          {{- define "moodle.envFrom" }}
+          envFrom:
+            - secretRef:
+                name: {{ template "moodle.secret" . }}
+          {{- end }}
+          {{- include "moodle.envFrom" . }}
+
+          {{- define "moodle.env" }}
+          env:
+            {{ include "postgresql.env" . | nindent 12 }}
+            {{ include "redis.env" . | nindent 12 }}
+            - name: MOODLE_WWWROOT
+              value: https://{{ .Values.moodle.ingress.hostname }}
+          {{- end }}
+          {{- include "moodle.env" . }}
+
+          {{- define "moodle.containerSecurityContext" }}
+          securityContext:
+            runAsUser: 33
+            runAsGroup: 33
+            {{- if .Values.debug.securityContext.moodle.enabled }}
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+            runAsNonRoot: true
+            readOnlyRootFilesystem: false
+            {{- end }}
+          {{- end }}
+          {{- include "moodle.containerSecurityContext" . }}
+
+          readinessProbe:
+            exec:
+              command:
+              - bash
+              - -c
+              - |
+                set -e;
+                wget $MOODLE_WWWROOT -O /dev/null;
+                php admin/cli/checks.php --type=status --filter=environment;
+            failureThreshold: 4
+            initialDelaySeconds: 15
+            periodSeconds: 15
+          livenessProbe:
+            exec:
+              command:
+              - bash
+              - -c
+              - |
+                set -e;
+                wget $MOODLE_WWWROOT -O /dev/null;
+                
+            failureThreshold: 4
+            initialDelaySeconds: 15
+            periodSeconds: 15
+
+          {{- define "moodle.volumeMounts" }}
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/moodle
+          {{- end }}
+          {{- include "moodle.volumeMounts" . }}
+
+      {{- define "moodle.volumes" }}
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+              claimName: {{ template "moodle.pvc" . }}
+      {{- end }}
+      {{- include "moodle.volumes" . }}
+
+      {{- define "moodle.podSecurityContext" }}
+      securityContext:
+        fsGroup: 150
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+      {{- end }}
+      {{- include "moodle.podSecurityContext" . }}
+
+      imagePullSecrets:
+      {{- if .Values.pullSecret.data }}
+        - name: {{ template "moodle.basename" . }}-pull-secret
+      {{- end }}

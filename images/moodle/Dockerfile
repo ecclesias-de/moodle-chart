@@ -1,4 +1,4 @@
-ARG PHP_FPM_NGINX_TAG=8.3-ubuntu24.04-mw25.3.10
+ARG PHP_FPM_NGINX_TAG=8.3-ubuntu24.04-mw25.3.10.1
 
 FROM dockerregistry.metaways.net/se/php-fpm-nginx-docker/php-fpm-nginx:${PHP_FPM_NGINX_TAG} as moodle
 ARG MOODLE_ROOT=/var/www/moodle
@@ -44,7 +44,7 @@ RUN export MOODLE_BRANCH=$(printf "%d%02d" $(echo ${APP_VERSION} | cut -d '.' -f
  && tar --no-same-owner -xzf /tmp/moodle.tgz -C $(dirname ${MOODLE_ROOT}) \
  && rm /tmp/moodle.tgz
 
-COPY images/moodle/etc/moodle/config.php ${MOODLE_ROOT}/config.php
+COPY --chmod=0640 images/moodle/etc/moodle/config.php ${MOODLE_ROOT}/config.php
 
 RUN mkdir -p ${MOODLE_DATA} ${MOODLE_LOCAL_CACHE} \
  && chown www-data:www-data ${MOODLE_DATA} ${MOODLE_LOCAL_CACHE} \

@@ -1,0 +1,86 @@
+moodle:
+  hooks:
+    apply:
+      enabled: true
+      resources:
+        limits:
+          memory: 512Mi
+        requests:
+          cpu: 500m
+          memory: 512Mi
+    maintenanceoff:
+      enabled: true
+      resources:
+        limits:
+          memory: 512Mi
+        requests:
+          cpu: 100m
+          memory: 512Mi
+  cronjob:
+    resources:
+      limits:
+        memory: 512Mi
+      requests:
+        cpu: 500m
+        memory: 512Mi
+  deployment:
+    image:
+      repository: registry.rz1.metaways.net/devops/moodle
+      tag: 4.5.2-rc8
+      imagePullPolicy: IfNotPresent
+    resources:
+      limits:
+        memory: 512Mi
+      requests:
+        cpu: 500m
+        memory: 512Mi
+    replicas: 2
+  persistence:
+    accessMode: ReadWriteMany
+    resources:
+      requests:
+        storage: 2Gi
+    # storageClassName:
+    # existingPvc:
+  secrets:
+    # existingSecret:
+    # MOODLE_UPGRADEKEY: #REQUIRED if existingSecret no set
+    # MOODLE_ADMIN_PASSWORD: #REQUIRED if existingSecret no set
+  ingress:
+    enabled: true
+    # hostname: #REQUIRED
+    annotations: 
+      # kubernetes.io/tls-acme: "true"
+database:
+  sslmode: true
+  # db: #REQUIRED
+  # host: #REQUIRED if connectionConfigMap is not set
+  # user: #REQUIRED if userSecret is not set
+  # password: #REQUIRED if userSecret is not set
+  # userSecret: 
+  # connectionConfigMap:
+redis:
+  db: 0
+  # host: #REQUIRED if connectionConfigMap is not set
+  # port: #REQUIRED if connectionConfigMap is not set
+  # connectionConfigMap:
+pullSecret:
+  # data: 
+jobAnnotations:
+metadata:
+  team: #REQUIRED
+  name: moodle
+debug:
+  diagnoseMode:
+    moodleapply:
+      enabled: false
+      command: [tail, -f, /dev/null]
+    moodlemaintenanceoff:
+      enabled: false
+      command: [tail, -f, /dev/null]
+    moodle:
+      enabled: false
+      command: [tail, -f, /dev/null]
+  securityContext:
+    moodle:
+      enabled: true
