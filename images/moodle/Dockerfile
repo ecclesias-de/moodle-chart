@@ -28,7 +28,8 @@ RUN apt-get update \
     php${PHP_VERSION}-pgsql \
     graphviz \
     aspell \
-    ghostscript
+    ghostscript \
+    locales
     
 RUN sed -i 's/.*max_input_vars =.*/max_input_vars = 5000/' /etc/php/8.3/fpm/php.ini \
  && sed -i 's/.*max_input_vars =.*/max_input_vars = 5000/' /etc/php/8.3/cli/php.ini
@@ -59,9 +60,11 @@ WORKDIR ${MOODLE_ROOT}/
 
 USER www-data
 
-FROM moodle as moodle-with-plugins
+FROM moodle as moodle-custom
 
 USER root
+
+RUN locale-gen de_DE.utf8
 
 # https://moodle.org/plugins/mod_checklist
 RUN wget https://moodle.org/plugins/download.php/33532/mod_checklist_moodle45_2024101900.zip -O /tmp/mod_checklist.zip \
