@@ -11,7 +11,7 @@ include:
   - component: $CI_SERVER_FQDN/gitlabci-components/image-build/build@1.0.2
     inputs:
       name: moodle
-      target: moodle-with-plugins
+      target: moodle-custom
       registry: registry.rz1.metaways.net
       registry_repo: registry.rz1.metaways.net/devops
       registry_user: $REGISTRY_RZ1_USER
