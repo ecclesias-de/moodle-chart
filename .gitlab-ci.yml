@@ -16,3 +16,6 @@ include:
       registry_repo: registry.rz1.metaways.net/devops
       registry_user: $REGISTRY_RZ1_USER
       registry_password: $REGISTRY_RZ1_PASSWORD
+  - component: $CI_SERVER_FQDN/gitlabci-components/helm-build/build@1.2.1
+    inputs:
+      name: moodle

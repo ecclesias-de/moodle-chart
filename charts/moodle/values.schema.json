@@ -1,0 +1,215 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "type": "object",
+    "additionalProperties": true,
+    "properties": {
+        "moodle": {
+            "type": "object",
+            "additionalProperties": true,
+            "properties": {
+                "persistence": {
+                    "type": "object",
+                    "additionalProperties": true,
+                    "properties": {
+                        "accessMode": {
+                            "type": "string"
+                        },
+                        "resources": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                                "requests": {
+                                    "type": "object",
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "storage": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": ["storage"]
+                                }
+                            },
+                            "required": ["requests"]
+                        },
+                        "storageClassName": {
+                            "type": "string"
+                        },
+                        "existingPvc": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "accessMode",
+                        "resources"
+                    ]
+                },
+                "secrets": {
+                    "type": "object",
+                    "additionalProperties": true,
+                    "properties": {
+                        "existingSecret": {
+                            "type": "string"
+                        },
+                        "MOODLE_UPGRADEKEY": {
+                            "type": "string"
+                        },
+                        "MOODLE_ADMIN_PASSWORD": {
+                            "type": "string"
+                        }
+                    },
+                    "oneOf": [
+                        {
+                            "required": ["existingSecret"]
+                        },
+                        {
+                            "required": [
+                                "MOODLE_UPGRADEKEY",
+                                "MOODLE_ADMIN_PASSWORD"
+                            ]
+                        }
+                    ]
+                },
+                "ingress": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "enabled": true,
+                        "hostname": {
+                            "type": "string"
+                        },
+                        "annotations": {
+                            "additionalProperties": {
+                                "type": ["integer", "string"]
+                            }
+                        }
+                    },
+                    "required": [
+                        "enabled",
+                        "hostname"
+                    ]
+                }
+            }
+        },
+        "database": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "host": {
+                    "type": "string"
+                },
+                "db": {
+                    "type": "string"
+                },
+                "user": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "userSecret": {
+                    "type": "string"
+                },
+                "connectionConfigMap": {
+                    "type": "string"
+                },
+                "sslmode": {
+                    "type": "boolean"
+                }
+            },
+            "oneOf": [
+                {
+                    "required": [
+                        "db",
+                        "host",
+                        "user",
+                        "password",
+                        "sslmode"
+                    ]
+                },
+                {
+                    "required": [
+                        "db",
+                        "connectionConfigMap",
+                        "user",
+                        "password",
+                        "sslmode"
+                    ]
+                },
+                {
+                    "required": [
+                        "db",
+                        "host",
+                        "userSecret",
+                        "sslmode"
+                    ]
+                },
+                {
+                    "required": [
+                        "db",
+                        "connectionConfigMap",
+                        "userSecret",
+                        "sslmode"
+                    ]
+                }
+            ]
+        },
+        "redis": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "db": {
+                    "type": "integer"
+                },
+                "host": {
+                    "type": "string"
+                },
+                "port": {
+                    "type": "integer"
+                },
+                "connectionConfigMap": {
+                    "type": "string"
+                }
+            },
+            "oneOf": [
+                {
+                    "required": [
+                        "db",
+                        "host",
+                        "port"
+                    ]
+                },
+                {
+                    "required": [
+                        "db",
+                        "connectionConfigMap"
+                    ]
+                }
+            ]
+        },
+        "pullSecret": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "data": {
+                    "type": "string"
+                }
+            }
+        },
+        "metadata": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "team": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "team",
+                "name"
+            ]
+        }
+    }
+}

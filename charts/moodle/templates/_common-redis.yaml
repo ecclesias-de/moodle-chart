@@ -1,0 +1,53 @@
+{{- /*
+redis env template - use configure redis or read redis from app env configmaps
+version 1.0.0
+usage:
+  env:
+    {{ include "redis.env" . | nindent 12 }}
+    # mapping vars to app specific vars
+    - name: APP_REDIS_HOST
+      value: $(REDIS_HOST)
+values.yaml:
+  redis:
+    host: #REQUIRED if connectionConfigMap is not set
+    port: 6379
+    db: 0
+    connectionConfigMap:
+*/}}
+
+{{- define "redis.env.host" -}}
+{{- if .Values.redis.connectionConfigMap -}}
+- name: REDIS_HOST
+  valueFrom:
+    configMapKeyRef:
+      name: {{ .Values.redis.connectionConfigMap }}
+      key: REDIS_HOST
+{{- else -}}
+- name: REDIS_HOST
+  value: {{ .Values.redis.host | quote  }}
+{{- end -}}
+{{- end -}}
+
+{{- define "redis.env.port" -}}
+{{- if .Values.redis.connectionConfigMap -}}
+- name: REDIS_POR
+  valueFrom:
+    configMapKeyRef:
+      name: {{ .Values.redis.connectionConfigMap }}
+      key: REDIS_PORT
+{{- else -}}
+- name: REDIS_PORT
+  value: {{ .Values.redis.port | quote  }}
+{{- end -}}
+{{- end -}}
+
+{{- define "redis.env.db" -}}
+- name: REDIS_DB
+  value: {{ .Values.redis.db | quote  }}
+{{- end -}}
+
+{{- define "redis.env" -}}
+{{ include "redis.env.host" . }}
+{{ include "redis.env.port" . }}
+{{ include "redis.env.db" . }}
+{{- end -}}
