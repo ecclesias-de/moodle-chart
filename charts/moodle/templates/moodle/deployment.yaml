@@ -59,30 +59,32 @@ spec:
           {{- end }}
           {{- include "moodle.containerSecurityContext" . }}
 
-          readinessProbe:
-            exec:
-              command:
-              - bash
-              - -c
-              - |
-                set -e;
-                wget $MOODLE_WWWROOT -O /dev/null;
-                php admin/cli/checks.php --type=status --filter=environment;
-            failureThreshold: 4
-            initialDelaySeconds: 15
-            periodSeconds: 15
-          livenessProbe:
-            exec:
-              command:
-              - bash
-              - -c
-              - |
-                set -e;
-                wget $MOODLE_WWWROOT -O /dev/null;
+          {{- if not .Values.debug.diagnoseMode.moodle.enabled }}
+          # readinessProbe:
+          #   exec:
+          #     command:
+          #     - bash
+          #     - -c
+          #     - |
+          #       set -e;
+          #       wget $MOODLE_WWWROOT -O /dev/null;
+          #       php admin/cli/checks.php --type=status --filter=environment;
+          #   failureThreshold: 4
+          #   initialDelaySeconds: 15
+          #   periodSeconds: 15
+          # livenessProbe:
+          #   exec:
+          #     command:
+          #     - bash
+          #     - -c
+          #     - |
+          #       set -e;
+          #       wget $MOODLE_WWWROOT -O /dev/null;
                 
-            failureThreshold: 4
-            initialDelaySeconds: 15
-            periodSeconds: 15
+          #   failureThreshold: 4
+          #   initialDelaySeconds: 15
+          #   periodSeconds: 15
+          {{- end }}
 
           {{- define "moodle.volumeMounts" }}
           volumeMounts:

@@ -1,16 +1,24 @@
 releases:
-  - name: test
+  - name: dev
     kubeContext: moodle-dev-cluster
-    namespace: moodle-test
+    namespace: moodle-dev
     chart: ../charts/moodle
     secrets:
       - secrets.sops.yaml
     values:
       - moodle:
+          hooks:
+            apply:
+              enabled: false
+            maintenanceoff:
+              enabled: false
           deployment:
-            replicas: 1
+            replicas: 2
           persistence:
             storageClassName: csi-cephfs-sc
+            resources:
+              requests:
+                storage: 70Gi
           secrets:
             MOODLE_UPGRADEKEY: notsecureqrequireschanging
             MOODLE_ADMIN_PASSWORD: admin
@@ -27,3 +35,17 @@ releases:
         jobAnnotations:
         metadata:
           team: se
+      - debug:
+          diagnoseMode:
+            moodleapply:
+              enabled: false
+              command: [tail, -f, /dev/null]
+            moodlemaintenanceoff:
+              enabled: false
+              command: [tail, -f, /dev/null]
+            moodle:
+              enabled: false
+              command: [tail, -f, /dev/null]
+          securityContext:
+            moodle:
+              enabled: false
