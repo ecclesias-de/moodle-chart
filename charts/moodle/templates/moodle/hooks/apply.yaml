@@ -64,9 +64,9 @@ spec:
         
         {{- include "moodle.podSecurityContext" . }}
 
-        imagePullSecrets:
-        {{- if .Values.pullSecret.data }}
-          - name: {{ template "moodle.basename" . }}-pull-secret
-        {{- end }}
+      imagePullSecrets:
+      {{- if .Values.pullSecret.data }}
+        - name: {{ template "moodle.basename" . }}-pull-secret
+      {{- end }}
 
 {{- end -}}
