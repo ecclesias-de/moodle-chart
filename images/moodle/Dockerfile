@@ -77,7 +77,7 @@ RUN wget https://moodle.org/plugins/download.php/34993/mod_customcert_moodle45_2
  && rm /tmp/mod_customcert.zip
 
 # https://moodle.org/plugins/mod_kanban
-RUN wget https://moodle.org/plugins/download.php/34968/mod_kanban_moodle45_2025022001.zip -O /tmp/mod_kanban.zip \
+RUN wget https://moodle.org/plugins/download.php/35073/mod_kanban_moodle45_2025022701.zip -O /tmp/mod_kanban.zip \
  && unzip /tmp/mod_kanban.zip -d ${MOODLE_ROOT}/mod/ \
  && rm /tmp/mod_kanban.zip
 
