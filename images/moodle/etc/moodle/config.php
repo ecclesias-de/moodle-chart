@@ -47,7 +47,7 @@ $CFG->session_redis_database = getenvDefault('REDIS_DB', '0');
 $CFG->wwwroot   = getenvThrow('MOODLE_WWWROOT');
 
 # set by image
-$CFG->dataroot  = getenvThrow('MOODLE_DATA') . '/';
+$CFG->dataroot  = getenvThrow('MOODLE_DATA');
 # set by image
 $CFG->localcachedir = getenvThrow('MOODLE_LOCAL_CACHE');;
 
@@ -60,8 +60,8 @@ $CFG->admin = getenvDefault('MOODLE_ADMIN', 'admin');
 
 $CFG->xsendfile = 'X-Accel-Redirect';
 $CFG->xsendfilealiases = array(
-    '/dataroot/' => $CFG->dataroot,
-    '/localcachedir/' => $CFG->localcachedir,
+    '/dataroot/' => $CFG->dataroot . '/',
+    '/localcachedir/' => $CFG->localcachedir . '/',
 );
 
 $CFG->upgradekey = getenvThrow('MOODLE_UPGRADEKEY');
