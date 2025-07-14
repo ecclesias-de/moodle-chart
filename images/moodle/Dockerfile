@@ -31,10 +31,9 @@ RUN apt-get update \
     ghostscript \
     locales
     
-RUN sed -i 's/.*max_input_vars =.*/max_input_vars = 5000/' /etc/php/8.3/fpm/php.ini \
- && sed -i 's/.*max_input_vars =.*/max_input_vars = 5000/' /etc/php/8.3/cli/php.ini
-
 COPY images/moodle/etc/nginx/site.conf /etc/nginx/sites-available/default
+COPY images/moodle/etc/php/default/default/conf.d/30-moodle.ini etc/php/8.3/fpm/conf.d/30-moodle.ini
+COPY images/moodle/etc/php/default/default/conf.d/30-moodle.ini etc/php/8.3/cli/conf.d/30-moodle.ini
 
 ARG APP_VERSION
 RUN export MOODLE_BRANCH=$(printf "%d%02d" $(echo ${APP_VERSION} | cut -d '.' -f 1)  $(echo ${APP_VERSION} | cut -d '.' -f 2)) \
