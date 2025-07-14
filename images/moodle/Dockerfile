@@ -67,12 +67,12 @@ USER root
 RUN locale-gen de_DE.utf8
 
 # https://moodle.org/plugins/mod_checklist
-RUN wget https://moodle.org/plugins/download.php/33532/mod_checklist_moodle45_2024101900.zip -O /tmp/mod_checklist.zip \
+RUN wget https://moodle.org/plugins/download.php/35764/mod_checklist_moodle50_2025041901.zip -O /tmp/mod_checklist.zip \
  && unzip /tmp/mod_checklist.zip -d ${MOODLE_ROOT}/mod/ \
  && rm /tmp/mod_checklist.zip
 
 # https://moodle.org/plugins/mod_customcert
-RUN wget https://moodle.org/plugins/download.php/34993/mod_customcert_moodle45_2024042208.zip -O /tmp/mod_customcert.zip \
+RUN wget https://moodle.org/plugins/download.php/36496/mod_customcert_moodle45_2024042212.zip -O /tmp/mod_customcert.zip \
  && unzip /tmp/mod_customcert.zip -d ${MOODLE_ROOT}/mod/ \
  && rm /tmp/mod_customcert.zip
 
@@ -97,7 +97,7 @@ RUN wget https://moodle.org/plugins/download.php/36093/filter_filtercodes_moodle
  && rm /tmp/filter_filtercodes.zip
 
 # https://moodle.org/plugins/format_tiles
-RUN wget https://moodle.org/plugins/download.php/34231/format_tiles_moodle45_2024121252.zip -O /tmp/format_tiles.zip \
+RUN wget https://moodle.org/plugins/download.php/36593/format_tiles_moodle45_2025060258.zip -O /tmp/format_tiles.zip \
  && unzip /tmp/format_tiles.zip -d ${MOODLE_ROOT}/course/format/ \
  && rm /tmp/format_tiles.zip
 
