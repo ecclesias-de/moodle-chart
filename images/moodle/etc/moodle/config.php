@@ -60,4 +60,6 @@ $CFG->upgradekey = getenvThrow('MOODLE_UPGRADEKEY');
 
 $CFG->preventexecpath = true;
 
+$CFG->pathtophp = '/usr/bin/php';
+
 require_once(__DIR__ . '/lib/setup.php');
