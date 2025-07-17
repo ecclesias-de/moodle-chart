@@ -100,4 +100,7 @@ RUN wget https://moodle.org/plugins/download.php/36593/format_tiles_moodle45_202
  && unzip /tmp/format_tiles.zip -d ${MOODLE_ROOT}/course/format/ \
  && rm /tmp/format_tiles.zip
 
+RUN cdn_url=$(grep -R https://cdn.jsdelivr.net/npm/mathjax filter/mathjaxloader/settings.php | cut -d "'" -f 2) \
+ &&  wget $cdn_url -O ${MOODLE_ROOT}/MathJax.js
+
 USER www-data
