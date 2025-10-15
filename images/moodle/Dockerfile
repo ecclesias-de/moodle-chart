@@ -44,7 +44,7 @@ RUN export MOODLE_BRANCH=$(printf "%d%02d" $(echo ${APP_VERSION} | cut -d '.' -f
  && tar --no-same-owner -xzf /tmp/moodle.tgz -C $(dirname ${MOODLE_ROOT}) \
  && rm /tmp/moodle.tgz
 
-COPY --chmod=0640 images/moodle/etc/moodle/config.php ${MOODLE_ROOT}/config.php
+COPY --chmod=0640 --chown=root:www-data images/moodle/etc/moodle/config.php ${MOODLE_ROOT}/config.php
 
 RUN mkdir -p ${MOODLE_DATA} ${MOODLE_LOCAL_CACHE} \
  && chown www-data:www-data ${MOODLE_DATA} ${MOODLE_LOCAL_CACHE} \
