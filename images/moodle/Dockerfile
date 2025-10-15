@@ -1,4 +1,4 @@
-ARG PHP_FPM_NGINX_TAG=8.3-ubuntu24.04-mw25.3.10.1
+ARG PHP_FPM_NGINX_TAG=8.3-ubuntu24.04-mw25.10.5.1
 
 FROM dockerregistry.metaways.net/se/php-fpm-nginx-docker/php-fpm-nginx:${PHP_FPM_NGINX_TAG} as moodle
 ARG MOODLE_ROOT=/var/www/moodle
@@ -81,12 +81,12 @@ RUN wget https://moodle.org/plugins/download.php/35073/mod_kanban_moodle45_20250
  && rm /tmp/mod_kanban.zip
 
 # https://moodle.org/plugins/mod_onlyofficeeditor
-RUN wget https://moodle.org/plugins/download.php/33886/mod_onlyofficeeditor_moodle45_2024111301.zip -O /tmp/mod_onlyofficeeditor.zip \
+RUN wget https://moodle.org/plugins/download.php/37120/mod_onlyofficeeditor_moodle50_2025080402.zip -O /tmp/mod_onlyofficeeditor.zip \
  && unzip /tmp/mod_onlyofficeeditor.zip -d ${MOODLE_ROOT}/mod/ \
  && rm /tmp/mod_onlyofficeeditor.zip
 
 # https://moodle.org/plugins/assignsubmission_onlyoffice
-RUN wget https://moodle.org/plugins/download.php/33887/assignsubmission_onlyoffice_moodle45_2024111300.zip -O /tmp/assignsubmission_onlyoffice.zip \
+RUN wget https://moodle.org/plugins/download.php/37119/assignsubmission_onlyoffice_moodle50_2025080401.zip -O /tmp/assignsubmission_onlyoffice.zip \
  && unzip /tmp/assignsubmission_onlyoffice.zip -d ${MOODLE_ROOT}/mod/assign/submission/ \
  && rm /tmp/assignsubmission_onlyoffice.zip
 
@@ -96,7 +96,7 @@ RUN wget https://moodle.org/plugins/download.php/36093/filter_filtercodes_moodle
  && rm /tmp/filter_filtercodes.zip
 
 # https://moodle.org/plugins/format_tiles
-RUN wget https://moodle.org/plugins/download.php/36593/format_tiles_moodle45_2025060258.zip -O /tmp/format_tiles.zip \
+RUN wget https://moodle.org/plugins/download.php/37941/format_tiles_moodle45_2025070353.zip -O /tmp/format_tiles.zip \
  && unzip /tmp/format_tiles.zip -d ${MOODLE_ROOT}/course/format/ \
  && rm /tmp/format_tiles.zip
 
