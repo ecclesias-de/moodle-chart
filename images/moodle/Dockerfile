@@ -71,12 +71,12 @@ USER root
 RUN locale-gen de_DE.utf8
 
 # https://moodle.org/plugins/mod_checklist
-RUN wget https://moodle.org/plugins/download.php/35764/mod_checklist_moodle50_2025041901.zip -O /tmp/mod_checklist.zip \
+RUN wget https://moodle.org/plugins/download.php/38287/mod_checklist_moodle51_2025101800.zip -O /tmp/mod_checklist.zip \
  && unzip /tmp/mod_checklist.zip -d ${MOODLE_ROOT}/mod/ \
  && rm /tmp/mod_checklist.zip
 
 # https://moodle.org/plugins/mod_customcert
-RUN wget https://moodle.org/plugins/download.php/36496/mod_customcert_moodle45_2024042212.zip -O /tmp/mod_customcert.zip \
+RUN wget https://moodle.org/plugins/download.php/38857/mod_customcert_moodle45_2024042215.zip -O /tmp/mod_customcert.zip \
  && unzip /tmp/mod_customcert.zip -d ${MOODLE_ROOT}/mod/ \
  && rm /tmp/mod_customcert.zip
 
