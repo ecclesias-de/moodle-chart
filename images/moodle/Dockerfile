@@ -70,38 +70,39 @@ USER root
 
 RUN locale-gen de_DE.utf8
 
-# https://moodle.org/plugins/mod_checklist
+# https://moodle.org/plugins/mod_checklist/versions
 RUN wget https://moodle.org/plugins/download.php/38287/mod_checklist_moodle51_2025101800.zip -O /tmp/mod_checklist.zip \
  && unzip /tmp/mod_checklist.zip -d ${MOODLE_ROOT}/mod/ \
  && rm /tmp/mod_checklist.zip
 
-# https://moodle.org/plugins/mod_customcert
-RUN wget https://moodle.org/plugins/download.php/38857/mod_customcert_moodle45_2024042215.zip -O /tmp/mod_customcert.zip \
+# https://moodle.org/plugins/mod_customcert/versions
+RUN wget https://moodle.org/plugins/download.php/39208/mod_customcert_moodle51_2025041404.zip -O /tmp/mod_customcert.zip \
  && unzip /tmp/mod_customcert.zip -d ${MOODLE_ROOT}/mod/ \
  && rm /tmp/mod_customcert.zip
 
-# https://moodle.org/plugins/mod_kanban
-RUN wget https://moodle.org/plugins/download.php/35073/mod_kanban_moodle45_2025022701.zip -O /tmp/mod_kanban.zip \
+# https://moodle.org/plugins/mod_kanban/versions
+RUN wget https://moodle.org/plugins/download.php/38201/mod_kanban_moodle51_2025101101.zip -O /tmp/mod_kanban.zip \
  && unzip /tmp/mod_kanban.zip -d ${MOODLE_ROOT}/mod/ \
  && rm /tmp/mod_kanban.zip
 
-# https://moodle.org/plugins/mod_onlyofficeeditor
+# https://moodle.org/plugins/mod_onlyofficeeditor/versions
+# dose not support 5.1 officially
 RUN wget https://moodle.org/plugins/download.php/37120/mod_onlyofficeeditor_moodle50_2025080402.zip -O /tmp/mod_onlyofficeeditor.zip \
  && unzip /tmp/mod_onlyofficeeditor.zip -d ${MOODLE_ROOT}/mod/ \
  && rm /tmp/mod_onlyofficeeditor.zip
 
-# https://moodle.org/plugins/assignsubmission_onlyoffice
+# https://moodle.org/plugins/assignsubmission_onlyoffice/versions
 RUN wget https://moodle.org/plugins/download.php/37119/assignsubmission_onlyoffice_moodle50_2025080401.zip -O /tmp/assignsubmission_onlyoffice.zip \
  && unzip /tmp/assignsubmission_onlyoffice.zip -d ${MOODLE_ROOT}/mod/assign/submission/ \
  && rm /tmp/assignsubmission_onlyoffice.zip
 
-# https://moodle.org/plugins/filter_filtercodes
-RUN wget https://moodle.org/plugins/download.php/36093/filter_filtercodes_moodle50_2025050500.zip -O /tmp/filter_filtercodes.zip \
+# https://moodle.org/plugins/filter_filtercodes/versions
+RUN wget https://moodle.org/plugins/download.php/38432/filter_filtercodes_moodle51_2025102700.zip -O /tmp/filter_filtercodes.zip \
  && unzip /tmp/filter_filtercodes.zip -d ${MOODLE_ROOT}/filter/ \
  && rm /tmp/filter_filtercodes.zip
 
-# https://moodle.org/plugins/format_tiles
-RUN wget https://moodle.org/plugins/download.php/37941/format_tiles_moodle45_2025070353.zip -O /tmp/format_tiles.zip \
+# https://moodle.org/plugins/format_tiles/versions
+RUN wget https://moodle.org/plugins/download.php/38175/format_tiles_moodle51_2025100900.zip -O /tmp/format_tiles.zip \
  && unzip /tmp/format_tiles.zip -d ${MOODLE_ROOT}/course/format/ \
  && rm /tmp/format_tiles.zip
 
