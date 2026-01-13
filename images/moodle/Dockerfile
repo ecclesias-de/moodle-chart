@@ -69,23 +69,23 @@ RUN locale-gen de_DE.utf8
 
 # https://moodle.org/plugins/mod_checklist/versions
 RUN wget https://moodle.org/plugins/download.php/38287/mod_checklist_moodle51_2025101800.zip -O /tmp/mod_checklist.zip \
- && unzip /tmp/mod_checklist.zip -d ${MOODLE_ROOT}/mod/ \
+ && unzip /tmp/mod_checklist.zip -d ${MOODLE_ROOT}/public/mod/ \
  && rm /tmp/mod_checklist.zip
 
 # https://moodle.org/plugins/mod_customcert/versions
 RUN wget https://moodle.org/plugins/download.php/39208/mod_customcert_moodle51_2025041404.zip -O /tmp/mod_customcert.zip \
- && unzip /tmp/mod_customcert.zip -d ${MOODLE_ROOT}/mod/ \
+ && unzip /tmp/mod_customcert.zip -d ${MOODLE_ROOT}/public/mod/ \
  && rm /tmp/mod_customcert.zip
 
 # https://moodle.org/plugins/mod_kanban/versions
 RUN wget https://moodle.org/plugins/download.php/38201/mod_kanban_moodle51_2025101101.zip -O /tmp/mod_kanban.zip \
- && unzip /tmp/mod_kanban.zip -d ${MOODLE_ROOT}/mod/ \
+ && unzip /tmp/mod_kanban.zip -d ${MOODLE_ROOT}/public/mod/ \
  && rm /tmp/mod_kanban.zip
 
 # https://moodle.org/plugins/mod_onlyofficeeditor/versions
 # dose not support 5.1 officially
 RUN wget https://moodle.org/plugins/download.php/37120/mod_onlyofficeeditor_moodle50_2025080402.zip -O /tmp/mod_onlyofficeeditor.zip \
- && unzip /tmp/mod_onlyofficeeditor.zip -d ${MOODLE_ROOT}/mod/ \
+ && unzip /tmp/mod_onlyofficeeditor.zip -d ${MOODLE_ROOT}/public/mod/ \
  && rm /tmp/mod_onlyofficeeditor.zip
 
 # https://moodle.org/plugins/assignsubmission_onlyoffice/versions
