@@ -89,8 +89,9 @@ RUN wget https://moodle.org/plugins/download.php/37120/mod_onlyofficeeditor_mood
  && rm /tmp/mod_onlyofficeeditor.zip
 
 # https://moodle.org/plugins/assignsubmission_onlyoffice/versions
+# dose not support 5.1 officially
 RUN wget https://moodle.org/plugins/download.php/37119/assignsubmission_onlyoffice_moodle50_2025080401.zip -O /tmp/assignsubmission_onlyoffice.zip \
- && unzip /tmp/assignsubmission_onlyoffice.zip -d ${MOODLE_ROOT}/mod/assign/submission/ \
+ && unzip /tmp/assignsubmission_onlyoffice.zip -d ${MOODLE_ROOT}/public/mod/assign/submission/ \
  && rm /tmp/assignsubmission_onlyoffice.zip
 
 # https://moodle.org/plugins/filter_filtercodes/versions
@@ -100,10 +101,10 @@ RUN wget https://moodle.org/plugins/download.php/38432/filter_filtercodes_moodle
 
 # https://moodle.org/plugins/format_tiles/versions
 RUN wget https://moodle.org/plugins/download.php/38175/format_tiles_moodle51_2025100900.zip -O /tmp/format_tiles.zip \
- && unzip /tmp/format_tiles.zip -d ${MOODLE_ROOT}/course/format/ \
+ && unzip /tmp/format_tiles.zip -d ${MOODLE_ROOT}/public/course/format/ \
  && rm /tmp/format_tiles.zip
 
-RUN cdn_url=$(grep -R https://cdn.jsdelivr.net/npm/mathjax filter/mathjaxloader/settings.php | cut -d "'" -f 2) \
+RUN cdn_url=$(grep -R https://cdn.jsdelivr.net/npm/mathjax public/filter/mathjaxloader/settings.php | cut -d "'" -f 2) \
  &&  wget $cdn_url -O ${MOODLE_ROOT}/MathJax.js
 
 USER www-data
