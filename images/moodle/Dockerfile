@@ -97,7 +97,7 @@ RUN wget https://moodle.org/plugins/download.php/37120/mod_onlyofficeeditor_mood
 
 # https://moodle.org/plugins/filter_filtercodes/versions
 RUN wget https://moodle.org/plugins/download.php/38432/filter_filtercodes_moodle51_2025102700.zip -O /tmp/filter_filtercodes.zip \
- && unzip /tmp/filter_filtercodes.zip -d ${MOODLE_ROOT}/filter/ \
+ && unzip /tmp/filter_filtercodes.zip -d ${MOODLE_ROOT}/public/filter/ \
  && rm /tmp/filter_filtercodes.zip
 
 # https://moodle.org/plugins/format_tiles/versions

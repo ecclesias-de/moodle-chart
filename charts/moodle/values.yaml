@@ -26,7 +26,7 @@ moodle:
   deployment:
     image:
       repository: registry.rz1.metaways.net/devops/moodle
-      tag: 5.1.1-ebhh1-rc3
+      tag: 5.1.1-ebhh1-rc4
       imagePullPolicy: IfNotPresent
     resources:
       limits:
