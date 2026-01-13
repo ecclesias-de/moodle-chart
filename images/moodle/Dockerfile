@@ -90,9 +90,10 @@ RUN wget https://moodle.org/plugins/download.php/37120/mod_onlyofficeeditor_mood
 
 # https://moodle.org/plugins/assignsubmission_onlyoffice/versions
 # dose not support 5.1 officially
-RUN wget https://moodle.org/plugins/download.php/37119/assignsubmission_onlyoffice_moodle50_2025080401.zip -O /tmp/assignsubmission_onlyoffice.zip \
- && unzip /tmp/assignsubmission_onlyoffice.zip -d ${MOODLE_ROOT}/public/mod/assign/submission/ \
- && rm /tmp/assignsubmission_onlyoffice.zip
+# todo: Dependencies check failed for assignsubmission_onlyoffice - occurred while updating
+# RUN wget https://moodle.org/plugins/download.php/37119/assignsubmission_onlyoffice_moodle50_2025080401.zip -O /tmp/assignsubmission_onlyoffice.zip \
+#  && unzip /tmp/assignsubmission_onlyoffice.zip -d ${MOODLE_ROOT}/public/mod/assign/submission/ \
+#  && rm /tmp/assignsubmission_onlyoffice.zip
 
 # https://moodle.org/plugins/filter_filtercodes/versions
 RUN wget https://moodle.org/plugins/download.php/38432/filter_filtercodes_moodle51_2025102700.zip -O /tmp/filter_filtercodes.zip \
