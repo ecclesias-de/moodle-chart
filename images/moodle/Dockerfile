@@ -57,9 +57,6 @@ ENV MOODLE_LOCAL_CACHE=${MOODLE_LOCAL_CACHE}
 VOLUME [ ${MOODLE_DATA} ${MOODLE_LOCAL_CACHE} ]
 WORKDIR ${MOODLE_ROOT}/
 
-# todo: remove for > 4.5.7. Fixes https://moodle.atlassian.net/browse/MDL-86822
-RUN sed -i 's/function h5pactivity_page_type_list(string $pagetype, ?stdClass $parentcontext, stdClass $currentcontext): array {/function h5pactivity_page_type_list(string $pagetype, ?stdClass $parentcontext, ?stdClass $currentcontext): array {/g' mod/h5pactivity/lib.php
-
 USER www-data
 
 
