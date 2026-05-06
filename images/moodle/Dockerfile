@@ -57,9 +57,6 @@ ENV MOODLE_LOCAL_CACHE=${MOODLE_LOCAL_CACHE}
 VOLUME [ ${MOODLE_DATA} ${MOODLE_LOCAL_CACHE} ]
 WORKDIR ${MOODLE_ROOT}/
 
-# todo: remove for > 4.5.7. Fixes https://moodle.atlassian.net/browse/MDL-86822
-RUN sed -i 's/function h5pactivity_page_type_list(string $pagetype, ?stdClass $parentcontext, stdClass $currentcontext): array {/function h5pactivity_page_type_list(string $pagetype, ?stdClass $parentcontext, ?stdClass $currentcontext): array {/g' mod/h5pactivity/lib.php
-
 USER www-data
 
 
@@ -71,17 +68,17 @@ USER root
 RUN locale-gen de_DE.utf8
 
 # https://moodle.org/plugins/mod_checklist
-RUN wget https://moodle.org/plugins/download.php/38287/mod_checklist_moodle51_2025101800.zip -O /tmp/mod_checklist.zip \
+RUN wget https://moodle.org/plugins/download.php/41491/mod_checklist_moodle52_2026042400.zip -O /tmp/mod_checklist.zip \
  && unzip /tmp/mod_checklist.zip -d ${MOODLE_ROOT}/mod/ \
  && rm /tmp/mod_checklist.zip
 
 # https://moodle.org/plugins/mod_customcert
-RUN wget https://moodle.org/plugins/download.php/38857/mod_customcert_moodle45_2024042215.zip -O /tmp/mod_customcert.zip \
+RUN wget https://moodle.org/plugins/download.php/40562/mod_customcert_moodle45_2024042217.zip -O /tmp/mod_customcert.zip \
  && unzip /tmp/mod_customcert.zip -d ${MOODLE_ROOT}/mod/ \
  && rm /tmp/mod_customcert.zip
 
 # https://moodle.org/plugins/mod_kanban
-RUN wget https://moodle.org/plugins/download.php/35073/mod_kanban_moodle45_2025022701.zip -O /tmp/mod_kanban.zip \
+RUN wget https://moodle.org/plugins/download.php/41661/mod_kanban_moodle52_2026050501.zip -O /tmp/mod_kanban.zip \
  && unzip /tmp/mod_kanban.zip -d ${MOODLE_ROOT}/mod/ \
  && rm /tmp/mod_kanban.zip
 
@@ -96,12 +93,12 @@ RUN wget https://moodle.org/plugins/download.php/37119/assignsubmission_onlyoffi
  && rm /tmp/assignsubmission_onlyoffice.zip
 
 # https://moodle.org/plugins/filter_filtercodes
-RUN wget https://moodle.org/plugins/download.php/36093/filter_filtercodes_moodle50_2025050500.zip -O /tmp/filter_filtercodes.zip \
+RUN wget https://moodle.org/plugins/download.php/38432/filter_filtercodes_moodle51_2025102700.zip -O /tmp/filter_filtercodes.zip \
  && unzip /tmp/filter_filtercodes.zip -d ${MOODLE_ROOT}/filter/ \
  && rm /tmp/filter_filtercodes.zip
 
 # https://moodle.org/plugins/format_tiles
-RUN wget https://moodle.org/plugins/download.php/37941/format_tiles_moodle45_2025070353.zip -O /tmp/format_tiles.zip \
+RUN wget https://moodle.org/plugins/download.php/39555/format_tiles_moodle45_2025070355.zip -O /tmp/format_tiles.zip \
  && unzip /tmp/format_tiles.zip -d ${MOODLE_ROOT}/course/format/ \
  && rm /tmp/format_tiles.zip
 
