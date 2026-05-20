@@ -93,7 +93,7 @@ RUN wget https://moodle.org/plugins/download.php/37119/assignsubmission_onlyoffi
  && rm /tmp/assignsubmission_onlyoffice.zip
 
 # https://moodle.org/plugins/filter_filtercodes
-RUN wget https://moodle.org/plugins/download.php/38432/filter_filtercodes_moodle51_2025102700.zip -O /tmp/filter_filtercodes.zip \
+RUN wget https://moodle.org/plugins/download.php/41771/filter_filtercodes_moodle52_2026051100.zip -O /tmp/filter_filtercodes.zip \
  && unzip /tmp/filter_filtercodes.zip -d ${MOODLE_ROOT}/filter/ \
  && rm /tmp/filter_filtercodes.zip
 
