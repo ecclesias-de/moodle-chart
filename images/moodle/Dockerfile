@@ -59,7 +59,7 @@ WORKDIR ${MOODLE_ROOT}/
 
 USER www-data
 
-
+FROM registry.rz1.metaways.net/devops/moodle:4.5.11-ebhh2 AS moodle-old
 
 FROM moodle as moodle-custom
 
@@ -93,9 +93,12 @@ RUN wget https://moodle.org/plugins/download.php/37119/assignsubmission_onlyoffi
  && rm /tmp/assignsubmission_onlyoffice.zip
 
 # https://moodle.org/plugins/filter_filtercodes
-RUN wget https://moodle.org/plugins/download.php/41771/filter_filtercodes_moodle52_2026051100.zip -O /tmp/filter_filtercodes.zip \
- && unzip /tmp/filter_filtercodes.zip -d ${MOODLE_ROOT}/filter/ \
- && rm /tmp/filter_filtercodes.zip
+# RUN wget https://moodle.org/plugins/download.php/41771/filter_filtercodes_moodle52_2026051100.zip -O /tmp/filter_filtercodes.zip \
+#  && unzip /tmp/filter_filtercodes.zip -d ${MOODLE_ROOT}/filter/ \
+#  && rm /tmp/filter_filtercodes.zip
+# plugin is unavailable - moodle migrates plugins to the marketplace - lets see 
+# temp fix:
+COPY --from=moodle-old ${MOODLE_ROOT}/filter/filtercodes ${MOODLE_ROOT}/filter/filtercodes
 
 # https://moodle.org/plugins/format_tiles
 RUN wget https://moodle.org/plugins/download.php/39555/format_tiles_moodle45_2025070355.zip -O /tmp/format_tiles.zip \
