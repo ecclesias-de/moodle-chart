@@ -76,8 +76,9 @@ RUN wget https://marketplace.moodle.com/api/plugins/mod_checklist/versions/20260
  && rm /tmp/mod_checklist.zip
 
 # https://marketplace.moodle.com/plugins/mod_customcert
-RUN wget https://marketplace.moodle.com/api/plugins/mod_customcert/versions/2026042006/download -O /tmp/mod_customcert.zip \
- && unzip /tmp/mod_customcert.zip -d ${MOODLE_ROOT}/mod/ \
+RUN wget https://marketplace.moodle.com/api/plugins/mod_customcert/versions/2024042220/download -O /tmp/mod_customcert.zip \
+ && unzip /tmp/mod_customcert.zip -d /tmp/ \
+ && mv /tmp/moodle-mod_customcert-* ${MOODLE_ROOT}/mod/customcert \
  && rm /tmp/mod_customcert.zip
 
 # https://marketplace.moodle.com/plugins/mod_kanban
