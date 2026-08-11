@@ -67,43 +67,45 @@ USER root
 
 RUN locale-gen de_DE.utf8
 
-# https://moodle.org/plugins/mod_checklist
-RUN wget https://moodle.org/plugins/download.php/41491/mod_checklist_moodle52_2026042400.zip -O /tmp/mod_checklist.zip \
+# How to update plugins:
+# Go to the marketplace, find die newest version, in the version tab. Update the version number in the url.
+
+# https://marketplace.moodle.com/plugins/mod_checklist
+RUN wget https://marketplace.moodle.com/api/plugins/mod_checklist/versions/2026042400/download -O /tmp/mod_checklist.zip \
  && unzip /tmp/mod_checklist.zip -d ${MOODLE_ROOT}/mod/ \
  && rm /tmp/mod_checklist.zip
 
-# https://moodle.org/plugins/mod_customcert
-RUN wget https://moodle.org/plugins/download.php/40562/mod_customcert_moodle45_2024042217.zip -O /tmp/mod_customcert.zip \
+# https://marketplace.moodle.com/plugins/mod_customcert
+RUN wget https://marketplace.moodle.com/api/plugins/mod_customcert/versions/2026042006/download -O /tmp/mod_customcert.zip \
  && unzip /tmp/mod_customcert.zip -d ${MOODLE_ROOT}/mod/ \
  && rm /tmp/mod_customcert.zip
 
-# https://moodle.org/plugins/mod_kanban
-RUN wget https://moodle.org/plugins/download.php/41661/mod_kanban_moodle52_2026050501.zip -O /tmp/mod_kanban.zip \
+# https://marketplace.moodle.com/plugins/mod_kanban
+RUN wget https://marketplace.moodle.com/api/plugins/mod_kanban/versions/2026050501/download -O /tmp/mod_kanban.zip \
  && unzip /tmp/mod_kanban.zip -d ${MOODLE_ROOT}/mod/ \
  && rm /tmp/mod_kanban.zip
 
-# https://moodle.org/plugins/mod_onlyofficeeditor
-RUN wget https://moodle.org/plugins/download.php/37120/mod_onlyofficeeditor_moodle50_2025080402.zip -O /tmp/mod_onlyofficeeditor.zip \
+# https://marketplace.moodle.com/plugins/mod_onlyofficeeditor
+RUN wget https://marketplace.moodle.com/api/plugins/mod_onlyofficeeditor/versions/2025080402/download -O /tmp/mod_onlyofficeeditor.zip \
  && unzip /tmp/mod_onlyofficeeditor.zip -d ${MOODLE_ROOT}/mod/ \
  && rm /tmp/mod_onlyofficeeditor.zip
 
-# https://moodle.org/plugins/assignsubmission_onlyoffice
-RUN wget https://moodle.org/plugins/download.php/37119/assignsubmission_onlyoffice_moodle50_2025080401.zip -O /tmp/assignsubmission_onlyoffice.zip \
+# https://marketplace.moodle.com/plugins/assignsubmission_onlyoffice
+RUN wget https://marketplace.moodle.com/api/plugins/assignsubmission_onlyoffice/versions/2025080401/download -O /tmp/assignsubmission_onlyoffice.zip \
  && unzip /tmp/assignsubmission_onlyoffice.zip -d ${MOODLE_ROOT}/mod/assign/submission/ \
  && rm /tmp/assignsubmission_onlyoffice.zip
 
-# https://moodle.org/plugins/filter_filtercodes
-# RUN wget https://moodle.org/plugins/download.php/41771/filter_filtercodes_moodle52_2026051100.zip -O /tmp/filter_filtercodes.zip \
-#  && unzip /tmp/filter_filtercodes.zip -d ${MOODLE_ROOT}/filter/ \
-#  && rm /tmp/filter_filtercodes.zip
-# plugin is unavailable - moodle migrates plugins to the marketplace - lets see 
-# temp fix:
-COPY --from=moodle-old ${MOODLE_ROOT}/filter/filtercodes ${MOODLE_ROOT}/filter/filtercodes
+# https://marketplace.moodle.com/plugins/filter_filtercodes
+RUN wget https://marketplace.moodle.com/api/plugins/filter_filtercodes/versions/2026072200/download -O /tmp/filter_filtercodes.zip \
+ && unzip /tmp/filter_filtercodes.zip -d ${MOODLE_ROOT}/filter/ \
+ && rm /tmp/filter_filtercodes.zip
 
-# https://moodle.org/plugins/format_tiles
-RUN wget https://moodle.org/plugins/download.php/39555/format_tiles_moodle45_2025070355.zip -O /tmp/format_tiles.zip \
+# https://marketplace.moodle.com/plugins/format_tiles
+RUN wget https://marketplace.moodle.com/api/plugins/format_tiles/versions/2026012570/download -O /tmp/format_tiles.zip \
  && unzip /tmp/format_tiles.zip -d ${MOODLE_ROOT}/course/format/ \
  && rm /tmp/format_tiles.zip
+
+
 
 RUN cdn_url=$(grep -R https://cdn.jsdelivr.net/npm/mathjax filter/mathjaxloader/settings.php | cut -d "'" -f 2) \
  &&  wget $cdn_url -O ${MOODLE_ROOT}/MathJax.js
