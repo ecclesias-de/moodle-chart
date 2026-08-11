@@ -101,7 +101,7 @@ RUN wget https://marketplace.moodle.com/api/plugins/filter_filtercodes/versions/
  && rm /tmp/filter_filtercodes.zip
 
 # https://marketplace.moodle.com/plugins/format_tiles
-RUN wget https://marketplace.moodle.com/api/plugins/format_tiles/versions/2026012570/download -O /tmp/format_tiles.zip \
+RUN wget https://marketplace.moodle.com/api/plugins/format_tiles/versions/2025070355/download -O /tmp/format_tiles.zip \
  && unzip /tmp/format_tiles.zip -d ${MOODLE_ROOT}/course/format/ \
  && rm /tmp/format_tiles.zip
 
