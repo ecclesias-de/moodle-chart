@@ -105,7 +105,26 @@ RUN wget https://marketplace.moodle.com/api/plugins/format_tiles/versions/202601
  && unzip /tmp/format_tiles.zip -d ${MOODLE_ROOT}/course/format/ \
  && rm /tmp/format_tiles.zip
 
+# needs moodle 5.0
+# # https://marketplace.moodle.com/plugins/tiny_styles
+# RUN wget https://marketplace.moodle.com/api/plugins/tiny_styles/versions/2025080602/download -O /tmp/tiny_styles.zip \
+#  && unzip /tmp/tiny_styles.zip -d ${MOODLE_ROOT}/lib/editor/tiny/plugins \
+#  && rm /tmp/tiny_styles.zip
 
+# https://marketplace.moodle.com/plugins/tiny_widgethub
+RUN wget https://marketplace.moodle.com/api/plugins/tiny_widgethub/versions/2026050702/download -O /tmp/tiny_widgethub.zip \
+ && unzip /tmp/tiny_widgethub.zip -d ${MOODLE_ROOT}/lib/editor/tiny/plugins \
+ && rm /tmp/tiny_widgethub.zip
+
+# https://marketplace.moodle.com/plugins/tiny_c4l
+RUN wget https://marketplace.moodle.com/api/plugins/tiny_c4l/versions/2026080500/download -O /tmp/tiny_c4l.zip \
+ && unzip /tmp/tiny_c4l.zip -d ${MOODLE_ROOT}/lib/editor/tiny/plugins \
+ && rm /tmp/tiny_c4l.zip
+
+# https://marketplace.moodle.com/plugins/tiny_elements
+RUN wget https://marketplace.moodle.com/api/plugins/tiny_elements/versions/2025081700/download -O /tmp/tiny_elements.zip \
+ && unzip /tmp/tiny_elements.zip -d ${MOODLE_ROOT}/lib/editor/tiny/plugins \
+ && rm /tmp/tiny_elements.zip
 
 RUN cdn_url=$(grep -R https://cdn.jsdelivr.net/npm/mathjax filter/mathjaxloader/settings.php | cut -d "'" -f 2) \
  &&  wget $cdn_url -O ${MOODLE_ROOT}/MathJax.js
