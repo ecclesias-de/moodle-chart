@@ -127,6 +127,11 @@ RUN wget https://marketplace.moodle.com/api/plugins/tiny_elements/versions/20250
  && unzip /tmp/tiny_elements.zip -d ${MOODLE_ROOT}/lib/editor/tiny/plugins \
  && rm /tmp/tiny_elements.zip
 
+# https://marketplace.moodle.com/plugins/tool_userautodelete
+RUN wget https://marketplace.moodle.com/api/plugins/tool_userautodelete/versions/2026100300/download -O /tmp/tool_userautodelete.zip \
+ && unzip /tmp/tool_userautodelete.zip -d ${MOODLE_ROOT}/admin/tool/ \
+ && rm /tmp/tool_userautodelete.zip
+
 RUN cdn_url=$(grep -R https://cdn.jsdelivr.net/npm/mathjax filter/mathjaxloader/settings.php | cut -d "'" -f 2) \
  &&  wget $cdn_url -O ${MOODLE_ROOT}/MathJax.js
 
