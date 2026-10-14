@@ -59,8 +59,6 @@ WORKDIR ${MOODLE_ROOT}/
 
 USER www-data
 
-FROM registry.rz1.metaways.net/devops/moodle:4.5.11-ebhh2 AS moodle-old
-
 FROM moodle as moodle-custom
 
 USER root
@@ -71,12 +69,12 @@ RUN locale-gen de_DE.utf8
 # Go to the marketplace, find die newest version, in the version tab. Update the version number in the url.
 
 # https://marketplace.moodle.com/plugins/mod_checklist
-RUN wget https://marketplace.moodle.com/api/plugins/mod_checklist/versions/2026042400/download -O /tmp/mod_checklist.zip \
+RUN wget https://marketplace.moodle.com/api/plugins/mod_checklist/versions/2026092500/download -O /tmp/mod_checklist.zip \
  && unzip /tmp/mod_checklist.zip -d ${MOODLE_ROOT}/mod/ \
  && rm /tmp/mod_checklist.zip
 
 # https://marketplace.moodle.com/plugins/mod_customcert
-RUN wget https://marketplace.moodle.com/api/plugins/mod_customcert/versions/2024042220/download -O /tmp/mod_customcert.zip \
+RUN wget https://marketplace.moodle.com/api/plugins/mod_customcert/versions/2024042228/download -O /tmp/mod_customcert.zip \
  && unzip /tmp/mod_customcert.zip -d /tmp/ \
  && mv /tmp/moodle-mod_customcert-* ${MOODLE_ROOT}/mod/customcert \
  && rm /tmp/mod_customcert.zip
@@ -97,7 +95,7 @@ RUN wget https://marketplace.moodle.com/api/plugins/assignsubmission_onlyoffice/
  && rm /tmp/assignsubmission_onlyoffice.zip
 
 # https://marketplace.moodle.com/plugins/filter_filtercodes
-RUN wget https://marketplace.moodle.com/api/plugins/filter_filtercodes/versions/2026051100/download -O /tmp/filter_filtercodes.zip \
+RUN wget https://marketplace.moodle.com/api/plugins/filter_filtercodes/versions/2026101201/download -O /tmp/filter_filtercodes.zip \
  && unzip /tmp/filter_filtercodes.zip -d ${MOODLE_ROOT}/filter/ \
  && rm /tmp/filter_filtercodes.zip
 
@@ -113,12 +111,12 @@ RUN wget https://marketplace.moodle.com/api/plugins/format_tiles/versions/202507
 #  && rm /tmp/tiny_styles.zip
 
 # https://marketplace.moodle.com/plugins/tiny_widgethub
-RUN wget https://marketplace.moodle.com/api/plugins/tiny_widgethub/versions/2026050702/download -O /tmp/tiny_widgethub.zip \
+RUN wget https://marketplace.moodle.com/api/plugins/tiny_widgethub/versions/2026101101/download -O /tmp/tiny_widgethub.zip \
  && unzip /tmp/tiny_widgethub.zip -d ${MOODLE_ROOT}/lib/editor/tiny/plugins \
  && rm /tmp/tiny_widgethub.zip
 
 # https://marketplace.moodle.com/plugins/tiny_c4l
-RUN wget https://marketplace.moodle.com/api/plugins/tiny_c4l/versions/2026080500/download -O /tmp/tiny_c4l.zip \
+RUN wget https://marketplace.moodle.com/api/plugins/tiny_c4l/versions/2026100400/download -O /tmp/tiny_c4l.zip \
  && unzip /tmp/tiny_c4l.zip -d ${MOODLE_ROOT}/lib/editor/tiny/plugins \
  && rm /tmp/tiny_c4l.zip
 
@@ -128,7 +126,7 @@ RUN wget https://marketplace.moodle.com/api/plugins/tiny_elements/versions/20250
  && rm /tmp/tiny_elements.zip
 
 # https://marketplace.moodle.com/plugins/tool_userautodelete
-RUN wget https://marketplace.moodle.com/api/plugins/tool_userautodelete/versions/2026100300/download -O /tmp/tool_userautodelete.zip \
+RUN wget https://marketplace.moodle.com/api/plugins/tool_userautodelete/versions/2026101200/download -O /tmp/tool_userautodelete.zip \
  && unzip /tmp/tool_userautodelete.zip -d ${MOODLE_ROOT}/admin/tool/ \
  && rm /tmp/tool_userautodelete.zip
 
