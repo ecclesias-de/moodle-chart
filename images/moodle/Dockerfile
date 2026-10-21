@@ -1,4 +1,4 @@
-ARG PHP_FPM_NGINX_TAG=8.3-ubuntu24.04-mw25.10.5.1
+ARG PHP_FPM_NGINX_TAG=8.3-ubuntu24.04-mw26.10.21.2
 
 FROM dockerregistry.metaways.net/se/php-fpm-nginx-docker/php-fpm-nginx:${PHP_FPM_NGINX_TAG} as moodle
 ARG MOODLE_ROOT=/var/www/moodle
