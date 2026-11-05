@@ -130,6 +130,11 @@ RUN wget https://marketplace.moodle.com/api/plugins/tool_userautodelete/versions
  && unzip /tmp/tool_userautodelete.zip -d ${MOODLE_ROOT}/admin/tool/ \
  && rm /tmp/tool_userautodelete.zip
 
+# https://marketplace.moodle.com/plugins/tool_deleted_user_anonymizer
+RUN wget https://marketplace.moodle.com/api/plugins/tool_deleted_user_anonymizer/versions/2025121201/download -O /tmp/tool_deleted_user_anonymizer.zip \
+ && unzip /tmp/tool_deleted_user_anonymizer.zip -d ${MOODLE_ROOT}/admin/tool/ \
+ && rm /tmp/tool_deleted_user_anonymizer.zip
+
 RUN cdn_url=$(grep -R https://cdn.jsdelivr.net/npm/mathjax filter/mathjaxloader/settings.php | cut -d "'" -f 2) \
  &&  wget $cdn_url -O ${MOODLE_ROOT}/MathJax.js
 
