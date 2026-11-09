@@ -71,6 +71,7 @@ RUN locale-gen de_DE.utf8
 # https://marketplace.moodle.com/plugins/mod_checklist
 RUN wget https://marketplace.moodle.com/api/plugins/mod_checklist/versions/2026092500/download -O /tmp/mod_checklist.zip \
  && unzip /tmp/mod_checklist.zip -d ${MOODLE_ROOT}/mod/ \
+ && mv mod/moodle-checklist-*/ mod/checklist/ \
  && rm /tmp/mod_checklist.zip
 
 # https://marketplace.moodle.com/plugins/mod_customcert
@@ -113,6 +114,7 @@ RUN wget https://marketplace.moodle.com/api/plugins/format_tiles/versions/202507
 # https://marketplace.moodle.com/plugins/tiny_widgethub
 RUN wget https://marketplace.moodle.com/api/plugins/tiny_widgethub/versions/2026101101/download -O /tmp/tiny_widgethub.zip \
  && unzip /tmp/tiny_widgethub.zip -d ${MOODLE_ROOT}/lib/editor/tiny/plugins \
+ && mv lib/editor/tiny/plugins/moodle-tiny_widgethub-*/ lib/editor/tiny/plugins/tiny_widgethub \
  && rm /tmp/tiny_widgethub.zip
 
 # https://marketplace.moodle.com/plugins/tiny_c4l
@@ -133,7 +135,7 @@ RUN wget https://marketplace.moodle.com/api/plugins/tool_userautodelete/versions
 # https://marketplace.moodle.com/plugins/tool_deleted_user_anonymizer
 RUN wget https://marketplace.moodle.com/api/plugins/tool_deleted_user_anonymizer/versions/2025121201/download -O /tmp/tool_deleted_user_anonymizer.zip \
  && unzip /tmp/tool_deleted_user_anonymizer.zip -d ${MOODLE_ROOT}/admin/tool/ \
- && mv admin/tool/*tool_deleted_user_anonymizer*/ admin/tool/deleted_user_anonymizer \
+ && mv admin/tool/moodle-tool_deleted_user_anonymizer-*/ admin/tool/deleted_user_anonymizer \
  && rm /tmp/tool_deleted_user_anonymizer.zip
 
 RUN cdn_url=$(grep -R https://cdn.jsdelivr.net/npm/mathjax filter/mathjaxloader/settings.php | cut -d "'" -f 2) \
