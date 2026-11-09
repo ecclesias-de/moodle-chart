@@ -133,7 +133,7 @@ RUN wget https://marketplace.moodle.com/api/plugins/tool_userautodelete/versions
 # https://marketplace.moodle.com/plugins/tool_deleted_user_anonymizer
 RUN wget https://marketplace.moodle.com/api/plugins/tool_deleted_user_anonymizer/versions/2025121201/download -O /tmp/tool_deleted_user_anonymizer.zip \
  && unzip /tmp/tool_deleted_user_anonymizer.zip -d ${MOODLE_ROOT}/admin/tool/ \
- && mv admin/tool/*tool_deleted_user_anonymizer*/ admin/tool/user_anonymizer \
+ && mv admin/tool/*tool_deleted_user_anonymizer*/ admin/tool/deleted_user_anonymizer \
  && rm /tmp/tool_deleted_user_anonymizer.zip
 
 RUN cdn_url=$(grep -R https://cdn.jsdelivr.net/npm/mathjax filter/mathjaxloader/settings.php | cut -d "'" -f 2) \
