@@ -114,7 +114,7 @@ RUN wget https://marketplace.moodle.com/api/plugins/format_tiles/versions/202507
 # https://marketplace.moodle.com/plugins/tiny_widgethub
 RUN wget https://marketplace.moodle.com/api/plugins/tiny_widgethub/versions/2026101101/download -O /tmp/tiny_widgethub.zip \
  && unzip /tmp/tiny_widgethub.zip -d ${MOODLE_ROOT}/lib/editor/tiny/plugins \
- && mv lib/editor/tiny/plugins/moodle-tiny_widgethub-*/ lib/editor/tiny/plugins/tiny_widgethub \
+ && mv lib/editor/tiny/plugins/moodle-tiny_widgethub-*/ lib/editor/tiny/plugins/widgethub \
  && rm /tmp/tiny_widgethub.zip
 
 # https://marketplace.moodle.com/plugins/tiny_c4l
