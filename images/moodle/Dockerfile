@@ -95,8 +95,9 @@ RUN wget https://marketplace.moodle.com/api/plugins/assignsubmission_onlyoffice/
  && unzip /tmp/assignsubmission_onlyoffice.zip -d ${MOODLE_ROOT}/mod/assign/submission/ \
  && rm /tmp/assignsubmission_onlyoffice.zip
 
+# info: downgraded to 2026051100 because new version has a bug with {coursecards}
 # https://marketplace.moodle.com/plugins/filter_filtercodes
-RUN wget https://marketplace.moodle.com/api/plugins/filter_filtercodes/versions/2026101201/download -O /tmp/filter_filtercodes.zip \
+RUN wget https://marketplace.moodle.com/api/plugins/filter_filtercodes/versions/2026051100/download -O /tmp/filter_filtercodes.zip \
  && unzip /tmp/filter_filtercodes.zip -d ${MOODLE_ROOT}/filter/ \
  && rm /tmp/filter_filtercodes.zip
 
